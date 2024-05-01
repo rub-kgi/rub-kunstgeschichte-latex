@@ -1,0 +1,6 @@
+{
+    "name": "rub-kgi-latex-development",
+    "build": {
+        "dockerfile": "Dockerfile"
+    }
+}
