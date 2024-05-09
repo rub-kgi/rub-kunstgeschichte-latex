@@ -2,5 +2,15 @@
     "name": "rub-kgi-latex-development",
     "build": {
         "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "GitHub.vscode-pull-request-github",
+                "Gruntfuggly.todo-tree",
+                "James-Yu.latex-workshop",
+                "mhutchie.git-graph"
+            ]
+        }
     }
 }
