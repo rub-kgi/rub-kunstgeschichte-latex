@@ -3,6 +3,9 @@
     "build": {
         "dockerfile": "Dockerfile"
     },
+    "containerEnv": {
+        "SHELL": "/bin/bash"
+    },
     "customizations": {
         "vscode": {
             "extensions": [
