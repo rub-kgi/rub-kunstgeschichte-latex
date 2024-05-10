@@ -1,0 +1,45 @@
+{
+    "name": "rub-kgi-latex-development",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "containerEnv": {
+        "SHELL": "/bin/bash"
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "latex-workshop.latex.tools": [
+                    {
+                      "name": "latexmk",
+                      "command": "latexmk",
+                      "args": [
+                        "-shell-escape",
+                        "-synctex=1",
+                        "-interaction=nonstopmode",
+                        "-file-line-error",
+                        "-pdf",
+                        "-outdir=%OUTDIR%",
+                        "%DOC%"
+                      ],
+                      "env": {}
+                    }
+                  ],
+                  "latex-workshop.latex.recipes": [
+                    {
+                      "name": "latexmk",
+                      "tools": [
+                        "latexmk"
+                      ]
+                    }
+                  ]
+            },
+            "extensions": [
+                "GitHub.vscode-pull-request-github",
+                "Gruntfuggly.todo-tree",
+                "James-Yu.latex-workshop",
+                "mhutchie.git-graph"
+            ]
+        }
+    }
+}
