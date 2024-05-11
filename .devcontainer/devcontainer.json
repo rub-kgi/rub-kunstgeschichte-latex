@@ -19,7 +19,7 @@
                         "-interaction=nonstopmode",
                         "-file-line-error",
                         "-pdf",
-                        "-outdir=%OUTDIR%",
+                        "-outdir=%WORKSPACE_FOLDER%/out",
                         "%DOC%"
                       ],
                       "env": {}
