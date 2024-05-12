@@ -17,6 +17,7 @@ out
 *.cb
 *.cb2
 .*.lb
+*.hd
 
 ## Intermediate documents:
 *.dvi
