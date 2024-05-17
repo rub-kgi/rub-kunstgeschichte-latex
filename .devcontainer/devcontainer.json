@@ -1,55 +1,48 @@
 {
-  "name": "rub-kgi-latex-development",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
-  "containerEnv": {
-    "SHELL": "/bin/bash"
-  },
-  "customizations": {
-    "vscode": {
-      "settings": {
-        // The number of spaces a tab is equal to. This setting is overridden
-        // based on the file contents when `editor.detectIndentation` is true.
-        "editor.tabSize": 4,
-        // Insert spaces when pressing Tab. This setting is overriden
-        // based on the file contents when `editor.detectIndentation` is true.
-        "editor.insertSpaces": true,
-        // When opening a file, `editor.tabSize` and `editor.insertSpaces`
-        // will be detected based on the file contents. Set to false to keep
-        // the values you've explicitly set, above.
-        "editor.detectIndentation": false,
-        "latex-workshop.latex.tools": [
-          {
-            "name": "latexmk",
-            "command": "latexmk",
-            "args": [
-              "-shell-escape",
-              "-synctex=1",
-              "-interaction=nonstopmode",
-              "-file-line-error",
-              "-pdf",
-              "-outdir=%WORKSPACE_FOLDER%/out",
-              "%DOC%"
-            ],
-            "env": {}
-          }
-        ],
-        "latex-workshop.latex.recipes": [
-          {
-            "name": "latexmk",
-            "tools": [
-              "latexmk"
+    "name": "rub-kgi-latex-development",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "containerEnv": {
+        "SHELL": "/bin/bash"
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                // The number of spaces a tab is equal to. This setting is overridden
+                // based on the file contents when `editor.detectIndentation` is true.
+                "editor.tabSize": 4,
+                // Insert spaces when pressing Tab. This setting is overriden
+                // based on the file contents when `editor.detectIndentation` is true.
+                "editor.insertSpaces": true,
+                // When opening a file, `editor.tabSize` and `editor.insertSpaces`
+                // will be detected based on the file contents. Set to false to keep
+                // the values you've explicitly set, above.
+                "editor.detectIndentation": false,
+                "latex-workshop.latex.tools": [
+                    {
+                        "name": "l3build doc",
+                        "command": "l3build",
+                        "args": [
+                            "doc"
+                        ]
+                    }
+                ],
+                "latex-workshop.latex.recipes": [
+                    {
+                        "name": "l3build doc",
+                        "tools": [
+                            "l3build doc"
+                        ]
+                    }
+                ]
+            },
+            "extensions": [
+                "GitHub.vscode-pull-request-github",
+                "Gruntfuggly.todo-tree",
+                "James-Yu.latex-workshop",
+                "mhutchie.git-graph"
             ]
-          }
-        ]
-      },
-      "extensions": [
-        "GitHub.vscode-pull-request-github",
-        "Gruntfuggly.todo-tree",
-        "James-Yu.latex-workshop",
-        "mhutchie.git-graph"
-      ]
+        }
     }
-  }
 }
