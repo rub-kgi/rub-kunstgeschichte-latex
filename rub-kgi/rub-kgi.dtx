@@ -5,7 +5,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2022-06-01]
 %<class>\ProvidesClass{rub-kgi}
 %<*class>
-    [2024-05-17 v0.1 RUB KGI class]
+    [2024-05-18 v0.1 RUB KGI class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -28,7 +28,7 @@
 %   \thanks{This document corresponds to \textsf{rub-kgi}~\fileversion,
 %     dated \filedate.}}
 % \author{Joran Schneyer \\ \texttt{joran.schneyer@ruhr-uni-bochum.de}}
-% \date{Released \filedate}
+% \date{\filedate}
 %
 % \maketitle
 %
@@ -39,5 +39,35 @@
 % \StopEventually{}
 %
 % \section{Implementation}
+%
+% \iffalse
+%<*class>
+% \fi
+%
+% \subsection{Base class}
+% The \textsf{\jobname} class is based on the \textsf{article} class.
+% When loading the class we specify \texttt{12pt} as the base font size, as required by the guidelines.
+% \iffalse
+%% Load base class with 12pt base font size
+% \fi
+%    \begin{macrocode}
+\LoadClass[12pt]{article}
+%    \end{macrocode}
+%
+% \subsection{Loading packages}
+%
+% \paragraph{Line spacing}
+% To achieve 1.5 times line spacing as required by the guidelines,
+% we simply load the package \textsf{setspace} with the \textsf{onehalfspacing} option.
+% \iffalse
+%% Set 1.5 times line spacing
+% \fi
+%    \begin{macrocode}
+\RequirePackage[onehalfspacing]{setspace}
+%    \end{macrocode}
+%
+% \iffalse
+%</class>
+% \fi
 %
 % \Finale
