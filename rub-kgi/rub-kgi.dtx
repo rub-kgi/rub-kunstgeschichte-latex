@@ -23,6 +23,7 @@
 % \GetFileInfo{rub-kgi.dtx}
 %
 % \DoNotIndex{\newcommand,\newenvironment}
+% \DoNotIndex{\begin,\end}
 %
 % \title{The \textsf{rub-kgi} class^^A
 %   \thanks{This document corresponds to \textsf{rub-kgi}~\fileversion,
@@ -37,6 +38,9 @@
 % \section{Usage}
 %
 % \StopEventually{}
+%
+% \clearpage
+% \appendix
 %
 % \section{Implementation}
 %
@@ -68,6 +72,56 @@
 %
 % \iffalse
 %</class>
+%<*example>
+% \fi
+%
+% \section{Example}
+%
+% To further exemplify the use of this class,
+% we create an example .tex file.
+% The full \texttt{rub-kgi-example.tex} and the corresponding \texttt{rub-kgi-example.pdf} are available on GitHub.
+%
+% Let's examine the contents of this example .tex file step by step
+% to highlight features of this class that were used.
+%
+% First, the \texttt{rub-kgi} class is loaded
+% \iffalse
+%% Load the rub-kgi class
+% \fi
+%    \begin{macrocode}
+\documentclass{rub-kgi}
+%    \end{macrocode}
+% \iffalse
+
+% \fi
+%
+% and then the information needed to typeset a title is given:
+%    \begin{macrocode}
+\title{Example usage of the \texttt{rub-kgi} class}
+\author{Joran Schneyer}
+%    \end{macrocode}
+%
+% Naturally, we begin the document environment and typeset the title
+%    \begin{macrocode}
+\begin{document}
+    \maketitle
+%    \end{macrocode}
+%
+% Next we need some text to show some features.
+% The text in the example itself will explain the features used.
+%    \begin{macrocode}
+    Here is some text.
+    Note, how the typeset text has 12pt font size as specified
+    and there is a 1.5 times line-spacing present.
+%    \end{macrocode}
+%
+% Finally we end the document environment
+%    \begin{macrocode}
+\end{document}
+%    \end{macrocode}
+% \iffalse
+
+%</example>
 % \fi
 %
 % \Finale
