@@ -38,6 +38,7 @@
                 ]
             },
             "extensions": [
+                "github.vscode-github-actions",
                 "GitHub.vscode-pull-request-github",
                 "Gruntfuggly.todo-tree",
                 "James-Yu.latex-workshop",
