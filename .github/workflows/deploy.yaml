@@ -29,7 +29,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            rub-kgi/build/distrib/*.zip
-            rub-kgi/build/doc/rub-kgi.pdf
+            rub-kgi/build/distrib/**/*.zip
+            rub-kgi/build/doc/*.pdf
             rub-kgi/build/unpacked/rub-kgi-example.tex
-            rub-kgi/build/doc/rub-kgi-example.pdf
