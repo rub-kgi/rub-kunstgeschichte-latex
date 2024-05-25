@@ -1,0 +1,35 @@
+name: Create release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    container: registry.gitlab.com/islandoftex/images/texlive:TL2024-2024-05-19-full
+    permissions:
+      contents: write
+    steps:
+      # Check out the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Run automated testing
+      # extract files from dtx
+      # build documentation
+      # and package a .zip for ctan
+      - name: Run l3build
+        run: l3build ctan -q -H
+        working-directory: ./rub-kgi
+
+      # Create a GitHub release
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            rub-kgi/build/unpacked/rub-kgi.cls
+            rub-kgi/build/distrib/**/*.zip
+            rub-kgi/build/doc/*.pdf
+            rub-kgi/build/unpacked/rub-kgi-example.tex

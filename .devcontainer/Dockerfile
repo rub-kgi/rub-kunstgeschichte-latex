@@ -1,4 +1,4 @@
-FROM texlive/texlive
+FROM registry.gitlab.com/islandoftex/images/texlive:TL2024-2024-05-19-full
 
 # Install general tools
 RUN apt-get update && apt-get install --no-install-recommends -y \

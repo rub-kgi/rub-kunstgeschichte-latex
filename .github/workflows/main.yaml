@@ -1,0 +1,50 @@
+name: Automated testing and building
+
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  l3build:
+    runs-on: ubuntu-latest
+    container: registry.gitlab.com/islandoftex/images/texlive:TL2024-2024-05-19-full
+    steps:
+      # Check out the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      # Run automated testing
+      # extract files from dtx
+      # and build documentation
+      - name: Run l3build
+        run: l3build doc -q -H
+        working-directory: ./rub-kgi
+
+      # Upload artifacts
+      # Upload (main) documentation
+      - name: Upload documentation
+        uses: actions/upload-artifact@v4
+        with:
+          name: rub-kgi-manual.pdf
+          path: rub-kgi/rub-kgi.pdf
+      # Upload extracted class
+      - name: Upload class
+        uses: actions/upload-artifact@v4
+        with:
+          name: rub-kgi.cls
+          path: rub-kgi/build/unpacked/rub-kgi.cls
+      # Upload example
+      - name: Upload example tex file
+        uses: actions/upload-artifact@v4
+        with:
+          name: rub-kgi-example.tex
+          path: rub-kgi/build/unpacked/rub-kgi-example.tex
+      - name: Upload example pdf file
+        uses: actions/upload-artifact@v4
+        with:
+          name: rub-kgi-example.pdf
+          path: rub-kgi/rub-kgi-example.pdf
+            
