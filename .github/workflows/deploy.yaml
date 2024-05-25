@@ -9,6 +9,8 @@ jobs:
   release:
     runs-on: ubuntu-latest
     container: registry.gitlab.com/islandoftex/images/texlive:TL2024-2024-05-19-full
+    permissions:
+      contents: write
     steps:
       # Check out the repository
       - name: Checkout repository
