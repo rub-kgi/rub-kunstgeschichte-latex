@@ -1,5 +1,5 @@
 {
-    "name": "rub-kgi-latex-development",
+    "name": "rub-kunstgeschichte-latex-development",
     "build": {
         "dockerfile": "Dockerfile"
     },

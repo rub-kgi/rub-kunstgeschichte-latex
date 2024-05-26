@@ -1,8 +1,8 @@
--- Build script for "rub-kgi" files
+-- Build script for "rub-kunstgeschichte" files
 
 -- Identify the bundle and module
 bundle = ""
-module = "rub-kgi"
+module = "rub-kunstgeschichte"
 
 -- Typeset example files
 typesetfiles = { "*.dtx", "*example.tex" }

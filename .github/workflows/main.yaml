@@ -22,30 +22,30 @@ jobs:
       # and build documentation
       - name: Run l3build
         run: l3build doc -q -H
-        working-directory: ./rub-kgi
+        working-directory: ./rub-kunstgeschichte
 
       # Upload artifacts
       # Upload (main) documentation
       - name: Upload documentation
         uses: actions/upload-artifact@v4
         with:
-          name: rub-kgi-manual.pdf
-          path: rub-kgi/rub-kgi.pdf
+          name: rub-kunstgeschichte-manual.pdf
+          path: rub-kunstgeschichte/rub-kunstgeschichte.pdf
       # Upload extracted class
       - name: Upload class
         uses: actions/upload-artifact@v4
         with:
-          name: rub-kgi.cls
-          path: rub-kgi/build/unpacked/rub-kgi.cls
+          name: rub-kunstgeschichte.cls
+          path: rub-kunstgeschichte/build/unpacked/rub-kunstgeschichte.cls
       # Upload example
       - name: Upload example tex file
         uses: actions/upload-artifact@v4
         with:
-          name: rub-kgi-example.tex
-          path: rub-kgi/build/unpacked/rub-kgi-example.tex
+          name: rub-kunstgeschichte-example.tex
+          path: rub-kunstgeschichte/build/unpacked/rub-kunstgeschichte-example.tex
       - name: Upload example pdf file
         uses: actions/upload-artifact@v4
         with:
-          name: rub-kgi-example.pdf
-          path: rub-kgi/rub-kgi-example.pdf
+          name: rub-kunstgeschichte-example.pdf
+          path: rub-kunstgeschichte/rub-kunstgeschichte-example.pdf
             
