@@ -49,13 +49,21 @@
 % \DoNotIndex{\newcommand,\newenvironment}
 % \DoNotIndex{\begin,\end}
 %
-% \title{The \textsf{rub-kgi} class^^A
-%   \thanks{This document corresponds to \textsf{rub-kgi}~\fileversion,
+%^^A define helper commands for consistent typesetting in the documentation
+% \def\env{\texttt}
+% \def\opt{\texttt}
+% \def\cls{\textsf}
+% \def\pkg{\textsf}
+% \def\prg{\textsf}
+% \DeclareDocumentCommand\email{m}{\href{mailto:#1}{\nolinkurl{#1}}}
+%
+% \title{The \cls{rub-kgi} class^^A
+%   \thanks{This document corresponds to \pkg{rub-kgi}~\fileversion,
 %     dated \filedate.}}
 % \author{\copyright{} Joran Schneyer^^A
 %   \thanks{Released under the LaTeX Project Public License v1.3c or later.^^A
 %   \\ See \url{https://www.latex-project.org/lppl.txt}}^^A
-%   \\ \texttt{joran.schneyer@ruhr-uni-bochum.de}}
+%   \\ \email{joran.schneyer@ruhr-uni-bochum.de}}
 % \date{\filedate}
 %
 % \maketitle
@@ -91,7 +99,7 @@
 % \fi
 %
 % \subsection{Base class}\label{sec:implementation:base-class}
-% The \textsf{\jobname} class is based on the \textsf{article} class.
+% The \cls{\jobname} class is based on the \cls{article} class.
 % When loading the class we specify \texttt{12pt} as the base font size, as required by the guidelines.
 % \iffalse
 %% Load base class with 12pt base font size
@@ -104,7 +112,7 @@
 %
 % \paragraph{Line spacing}
 % To achieve 1.5 times line spacing as required by the guidelines,
-% we simply load the package \textsf{setspace} with the \textsf{onehalfspacing} option.
+% we simply load the package \pkg{setspace} with the \opt{onehalfspacing} option.
 % \iffalse
 %% Set 1.5 times line spacing
 % \fi
@@ -140,7 +148,7 @@
 % Let's examine the contents of this example .tex file step by step
 % to highlight features of this class that were used.
 %
-% First, the \texttt{rub-kgi} class is loaded
+% First, the \cls{rub-kgi} class is loaded
 % \iffalse
 %% Load the rub-kgi class
 % \fi
@@ -153,7 +161,7 @@
 %
 % and then the information needed to typeset a title is given:
 %    \begin{macrocode}
-\title{Example usage of the \texttt{rub-kgi} class}
+\title{Example usage of the \textsf{rub-kgi} class}
 \author{Joran Schneyer}
 %    \end{macrocode}
 %
