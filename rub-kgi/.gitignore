@@ -1,1 +1,4 @@
 build
+
+# ignore generated zip files
+*.zip

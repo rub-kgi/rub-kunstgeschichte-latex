@@ -29,7 +29,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2022-06-01]
 %<class>\ProvidesClass{rub-kgi}
 %<*class>
-    [2024-05-18 v0.1 RUB KGI class]
+    [2024-05-26 v0.1.0 RUB KGI class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -44,39 +44,63 @@
 %</driver>
 % \fi
 %
+%^^A Document general changes here
+% \changes{v0.1.0}{2024-05-26}{Initial version}
+%
 % \GetFileInfo{rub-kgi.dtx}
 %
 % \DoNotIndex{\newcommand,\newenvironment}
 % \DoNotIndex{\begin,\end}
 %
-% \title{The \textsf{rub-kgi} class^^A
-%   \thanks{This document corresponds to \textsf{rub-kgi}~\fileversion,
+%^^A define helper commands for consistent typesetting in the documentation
+% \def\env{\texttt}
+% \def\opt{\texttt}
+% \def\cls{\textsf}
+% \def\pkg{\textsf}
+% \def\prg{\textsf}
+% \DeclareDocumentCommand\email{m}{\href{mailto:#1}{\nolinkurl{#1}}}
+%
+% \title{The \cls{rub-kgi} class^^A
+%   \thanks{This document corresponds to \pkg{rub-kgi}~\fileversion,
 %     dated \filedate.}}
-% \author{\copyright\,Joran Schneyer^^A
+% \author{\copyright{} Joran Schneyer^^A
 %   \thanks{Released under the LaTeX Project Public License v1.3c or later.^^A
 %   \\ See \url{https://www.latex-project.org/lppl.txt}}^^A
-%   \\ \texttt{joran.schneyer@ruhr-uni-bochum.de}}
+%   \\ \email{joran.schneyer@ruhr-uni-bochum.de}}
 % \date{\filedate}
 %
 % \maketitle
 %
-% \section{Introduction}
+% \section{Introduction}\label{sec:introduction}
 %
-% \section{Usage}
+% This \LaTeX{} class aims to implement the guidelines on scientific writing of the art history institute (Kunstgeschichtliches Institut - short: KGI) at Ruhr University Bochum.^^A
+% \footnote{Guidelines version July 2023 \url{https://kgi.ruhr-uni-bochum.de/wp-content/uploads/2023/04/Anleitung-zum-Erstellen-von-Hausarbeiten-im-Fach-Kunstgeschichte_Fassung-Juli-2023.pdf}}
+%
+% Note, that at this point this is not an official class made by anyone at the institute but rather a free-time hobby project of me, Joran, who knows \LaTeX{} from studying Electrical Engineering and just wants to help out some friends studying art history.
+%
+% You can find the latest releases and the development of this project at GitHub: \url{https://github.com/rub-kgi/rub-kgi-latex}
+%
+% \section{Usage}\label{sec:usage}
+%
+% To use this class, simply specify it as the document class.^^A
+% \footnote{You can also find a complete example usage of this class in \autoref{sec:example}.}
+% \begin{verbatim}
+% \documentclass{rub-kgi}
+% \end{verbatim}
 %
 % \StopEventually{}
 %
 % \clearpage
 % \appendix
 %
-% \section{Implementation}
+% \section{Implementation}\label{sec:implementation}
 %
 % \iffalse
 %<*class>
 % \fi
 %
-% \subsection{Base class}
-% The \textsf{\jobname} class is based on the \textsf{article} class.
+% \subsection{Base class}\label{sec:implementation:base-class}
+% The \cls{\jobname} class is based on the \cls{article} class.
 % When loading the class we specify \texttt{12pt} as the base font size, as required by the guidelines.
 % \iffalse
 %% Load base class with 12pt base font size
@@ -85,11 +109,11 @@
 \LoadClass[12pt]{article}
 %    \end{macrocode}
 %
-% \subsection{Loading packages}
+% \subsection{Loading packages}\label{sec:implementation:package-loading}
 %
 % \paragraph{Line spacing}
 % To achieve 1.5 times line spacing as required by the guidelines,
-% we simply load the package \textsf{setspace} with the \textsf{onehalfspacing} option.
+% we simply load the package \pkg{setspace} with the \opt{onehalfspacing} option.
 % \iffalse
 %% Set 1.5 times line spacing
 % \fi
@@ -115,16 +139,17 @@
 %<*example>
 % \fi
 %
-% \section{Example}
+% \section{Example}\label{sec:example}
 %
 % To further exemplify the use of this class,
 % we create an example .tex file.
-% The full \texttt{rub-kgi-example.tex} and the corresponding \texttt{rub-kgi-example.pdf} are available on GitHub\footnote{\url{https://github.com/rub-kgi/rub-kgi-latex/releases}}.
+% The full \texttt{rub-kgi-example.tex} and the corresponding \texttt{rub-kgi-example.pdf} are available on GitHub.^^A
+% \footnote{\url{https://github.com/rub-kgi/rub-kgi-latex/releases}}
 %
 % Let's examine the contents of this example .tex file step by step
 % to highlight features of this class that were used.
 %
-% First, the \texttt{rub-kgi} class is loaded
+% First, the \cls{rub-kgi} class is loaded
 % \iffalse
 %% Load the rub-kgi class
 % \fi
@@ -137,7 +162,7 @@
 %
 % and then the information needed to typeset a title is given:
 %    \begin{macrocode}
-\title{Example usage of the \texttt{rub-kgi} class}
+\title{Example usage of the \textsf{rub-kgi} class}
 \author{Joran Schneyer}
 %    \end{macrocode}
 %
