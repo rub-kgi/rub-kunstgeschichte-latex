@@ -46,11 +46,13 @@
 %
 %^^A Document general changes here
 % \changes{v0.1.0}{2024-05-26}{Initial version}
+% \changes{unreleased}{unreleased}{Use parskip to avoid paragraph indentation}
 %
 % \GetFileInfo{\jobname.dtx}
 %
 % \DoNotIndex{\newcommand,\newenvironment}
 % \DoNotIndex{\begin,\end}
+% \DoNotIndex{\fi}
 %
 %^^A define helper commands for consistent typesetting in the documentation
 % \def\env{\texttt}
@@ -99,6 +101,36 @@
 %<*class>
 % \fi
 %
+% \subsection{Class options}\label{sec:implementation:class-options}
+% \iffalse
+%% Class options
+% \fi
+% The class options are defined as keyval options for great flexibility.
+% They toggle some of the class features or customize their behavior.
+%
+% \paragraph{Paragraph indentation}
+% This defines a switch which is later used (see \autoref{sec:implementation:package-loading}) to check wether to load the \pkg{parskip} package to remove the indenation at the start of paragraphs.
+%    \begin{macrocode}
+\newif\if@rubkgi@parskip
+%    \end{macrocode}
+% By default we set the switch to true, so the parskip package is normally loaded when using this class.
+%    \begin{macrocode}
+\@rubkgi@parskiptrue
+%    \end{macrocode}
+% And finally we declare the key so the switch can be turned off by the user in the class options.
+%    \begin{macrocode}
+\DeclareKeys[rubkgi]{
+    parskip.if    = @rubkgi@parskip,
+    parskip.usage = load
+}
+%    \end{macrocode}
+%
+% \paragraph{Process options}
+% After defining the class options it is necessary to process them too in order to actually make use of them.
+%    \begin{macrocode}
+\ProcessKeyOptions[rubkgi]
+%    \end{macrocode}
+%
 % \subsection{Base class}\label{sec:implementation:base-class}
 % The \cls{\jobname} class is based on the \cls{article} class.
 % When loading the class we specify \texttt{12pt} as the base font size, as required by the guidelines.
@@ -132,6 +164,17 @@
     a4paper,
     top=2cm,left=2cm,bottom=2cm,right=4cm
 ]{geometry}
+%    \end{macrocode}
+%
+% \paragraph{Paragraph indentation}
+% To avoid indentation at the start of paragraphs, the \pkg{parskip} package is loaded if the corresponding switch is set to true. See also \autoref{sec:implementation:class-options}.
+% \iffalse
+%% Avoid paragraph indentation
+% \fi
+%    \begin{macrocode}
+\if@rubkgi@parskip
+    \RequirePackage{parskip}
+\fi
 %    \end{macrocode}
 %
 % \iffalse
@@ -178,6 +221,9 @@
     Here is some text.
     Note, how the typeset text has 12pt font size as specified
     and there is a 1.5 times line-spacing present.
+    And now I am ending this paragraph.
+
+    The next paragraph should not have any indentation.
 %    \end{macrocode}
 %
 % Finally we end the document environment
