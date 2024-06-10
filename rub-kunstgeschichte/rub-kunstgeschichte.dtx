@@ -110,6 +110,9 @@
 %
 % \paragraph{Paragraph indentation}
 % This defines a switch which is later used (see \autoref{sec:implementation:package-loading}) to check wether to load the \pkg{parskip} package to remove the indenation at the start of paragraphs.
+% \iffalse
+%% TeX switch to decide wether to load the parskip package
+% \fi
 %    \begin{macrocode}
 \newif\if@rubkgi@parskip
 %    \end{macrocode}
@@ -117,11 +120,16 @@
 %    \begin{macrocode}
 \@rubkgi@parskiptrue
 %    \end{macrocode}
-% And finally we declare the key so the switch can be turned off by the user in the class options.
+% Then we declare the key so the switch can be turned on and off by the user in the class options.
 %    \begin{macrocode}
 \DeclareKeys[rubkgi]{
-    parskip.if    = @rubkgi@parskip,
-    parskip.usage = load
+    parskip.if      = @rubkgi@parskip,
+    parskip.usage   = load,
+%    \end{macrocode}
+% Finally we define the complementary key for easier disabling of the parskip feature.
+%    \begin{macrocode}
+    noparskip.ifnot = @rubkgi@parskip,
+    noparskip.usage = load
 }
 %    \end{macrocode}
 %
