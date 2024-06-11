@@ -46,11 +46,13 @@
 %
 %^^A Document general changes here
 % \changes{v0.1.0}{2024-05-26}{Initial version}
+% \changes{unreleased}{unreleased}{Use parskip to avoid paragraph indentation}
 %
 % \GetFileInfo{\jobname.dtx}
 %
 % \DoNotIndex{\newcommand,\newenvironment}
 % \DoNotIndex{\begin,\end}
+% \DoNotIndex{\fi}
 %
 %^^A define helper commands for consistent typesetting in the documentation
 % \def\env{\texttt}
@@ -82,11 +84,32 @@
 %
 % \section{Usage}\label{sec:usage}
 %
+%\NewDocElement[macrolike = false,
+%		        toplevel  = false,
+%               idxtype   = option,
+%               idxgroup  = Class options,
+%               printtype = \textit{option}
+%              ]{Option}{option}
+%
 % To use this class, simply specify it as the document class.^^A
 % \footnote{You can also find a complete example usage of this class in \autoref{sec:example}.}
 % \begin{verbatim}
 % \documentclass{rub-kunstgeschichte}
 % \end{verbatim}
+%
+% \subsection{Class options}
+% You can pass several \meta{options} to the class by using
+% \begin{quote}
+% \verb|\documentclass|\oarg{options}\verb|{rub-kunstgeschichte}|
+% \end{quote}
+% The \meta{options} are key/value pairs that defer to a default value when only the key is given. \\
+%
+% \DescribeOption{parskip}
+% \DescribeOption{noparskip}
+% Boolean (default: \opt{true}).
+% Specify wether to load the \pkg{parskip} package to remove indentation at the start of paragraphs.
+% If neither of the keys are given, the package is loaded by default.
+%
 %
 % \StopEventually{}
 %
@@ -98,6 +121,48 @@
 % \iffalse
 %<*class>
 % \fi
+%
+% \subsection{Class options}\label{sec:implementation:class-options}
+% \iffalse
+%% Class options
+% \fi
+% The class options are defined as keyval options for great flexibility.
+% They toggle some of the class features or customize their behavior.
+%
+% \paragraph{Paragraph indentation}
+% First we define a TeX switch which is later used (see \autoref{sec:implementation:package-loading}) to check wether to load the \pkg{parskip} package to remove the indentation at the start of paragraphs.
+% \iffalse
+%% TeX switch to decide wether to load the parskip package
+% \fi
+%    \begin{macrocode}
+\newif\if@rubkgi@parskip
+%    \end{macrocode}
+% By default we set the switch to true, so the parskip package is normally loaded when using this class.
+%    \begin{macrocode}
+\@rubkgi@parskiptrue
+%    \end{macrocode}
+% \begin{option}{parskip}
+% Then we declare the key so the switch can be turned on and off by the user in the class options.
+%    \begin{macrocode}
+\DeclareKeys[rubkgi]{
+    parskip.if      = @rubkgi@parskip,
+    parskip.usage   = load,
+%    \end{macrocode}
+% \end{option}
+% \begin{option}{noparskip}
+% Finally we define the complementary key for easier disabling of the parskip feature.
+%    \begin{macrocode}
+    noparskip.ifnot = @rubkgi@parskip,
+    noparskip.usage = load
+}
+%    \end{macrocode}
+% \end{option}
+%
+% \paragraph{Process options}
+% After defining the class options it is necessary to process them too in order to actually make use of them.
+%    \begin{macrocode}
+\ProcessKeyOptions[rubkgi]
+%    \end{macrocode}
 %
 % \subsection{Base class}\label{sec:implementation:base-class}
 % The \cls{\jobname} class is based on the \cls{article} class.
@@ -134,7 +199,19 @@
 ]{geometry}
 %    \end{macrocode}
 %
+% \paragraph{Paragraph indentation}
+% To avoid indentation at the start of paragraphs, the \pkg{parskip} package is loaded if the corresponding switch is set to true. See also \autoref{sec:implementation:class-options}.
 % \iffalse
+%% Avoid paragraph indentation
+% \fi
+%    \begin{macrocode}
+\if@rubkgi@parskip
+    \RequirePackage{parskip}
+\fi
+%    \end{macrocode}
+%
+% \iffalse
+
 %</class>
 %<*example>
 % \fi
@@ -178,6 +255,9 @@
     Here is some text.
     Note, how the typeset text has 12pt font size as specified
     and there is a 1.5 times line-spacing present.
+    And now I am ending this paragraph.
+
+    The next paragraph should not have any indentation.
 %    \end{macrocode}
 %
 % Finally we end the document environment
