@@ -84,11 +84,32 @@
 %
 % \section{Usage}\label{sec:usage}
 %
+%\NewDocElement[macrolike = false,
+%		        toplevel  = false,
+%               idxtype   = option,
+%               idxgroup  = Class options,
+%               printtype = \textit{option}
+%              ]{Option}{option}
+%
 % To use this class, simply specify it as the document class.^^A
 % \footnote{You can also find a complete example usage of this class in \autoref{sec:example}.}
 % \begin{verbatim}
 % \documentclass{rub-kunstgeschichte}
 % \end{verbatim}
+%
+% \subsection{Class options}
+% You can pass several \meta{options} to the class by using
+% \begin{quote}
+% \verb|\documentclass|\oarg{options}\verb|{rub-kunstgeschichte}|
+% \end{quote}
+% The \meta{options} are key/value pairs that defer to a default value when only the key is given. \\
+%
+% \DescribeOption{parskip}
+% \DescribeOption{noparskip}
+% Boolean (default: \opt{true}).
+% Specify wether to load the \pkg{parskip} package to remove indentation at the start of paragraphs.
+% If neither of the keys are given, the package is loaded by default.
+%
 %
 % \StopEventually{}
 %
@@ -109,7 +130,7 @@
 % They toggle some of the class features or customize their behavior.
 %
 % \paragraph{Paragraph indentation}
-% This defines a switch which is later used (see \autoref{sec:implementation:package-loading}) to check wether to load the \pkg{parskip} package to remove the indenation at the start of paragraphs.
+% First we define a TeX switch which is later used (see \autoref{sec:implementation:package-loading}) to check wether to load the \pkg{parskip} package to remove the indentation at the start of paragraphs.
 % \iffalse
 %% TeX switch to decide wether to load the parskip package
 % \fi
@@ -120,18 +141,22 @@
 %    \begin{macrocode}
 \@rubkgi@parskiptrue
 %    \end{macrocode}
+% \begin{option}{parskip}
 % Then we declare the key so the switch can be turned on and off by the user in the class options.
 %    \begin{macrocode}
 \DeclareKeys[rubkgi]{
     parskip.if      = @rubkgi@parskip,
     parskip.usage   = load,
 %    \end{macrocode}
+% \end{option}
+% \begin{option}{noparskip}
 % Finally we define the complementary key for easier disabling of the parskip feature.
 %    \begin{macrocode}
     noparskip.ifnot = @rubkgi@parskip,
     noparskip.usage = load
 }
 %    \end{macrocode}
+% \end{option}
 %
 % \paragraph{Process options}
 % After defining the class options it is necessary to process them too in order to actually make use of them.
@@ -186,6 +211,7 @@
 %    \end{macrocode}
 %
 % \iffalse
+
 %</class>
 %<*example>
 % \fi
