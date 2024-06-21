@@ -33,6 +33,10 @@
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
+
+%^^A Load packages needed for the documentation
+\usepackage{dtxdescribe}
+
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
@@ -55,14 +59,9 @@
 % \DoNotIndex{\fi}
 %
 %^^A define helper commands for consistent typesetting in the documentation
-% \def\env{\texttt}
-% \def\opt{\texttt}
-% \def\cls{\textsf}
-% \def\pkg{\textsf}
-% \def\prg{\textsf}
 % \DeclareDocumentCommand\email{m}{\href{mailto:#1}{\nolinkurl{#1}}}
 %
-% \title{The \cls{\jobname} class^^A
+% \title{The \pkg{\jobname} class^^A
 %   \thanks{This document corresponds to \pkg{\jobname}~\fileversion,
 %     dated \filedate.}}
 % \author{\copyright{} Joran Schneyer^^A
@@ -83,13 +82,6 @@
 % You can find the latest releases and the development of this project at GitHub: \url{https://github.com/rub-kgi/rub-kunstgeschichte-latex}
 %
 % \section{Usage}\label{sec:usage}
-%
-%\NewDocElement[macrolike = false,
-%		        toplevel  = false,
-%               idxtype   = option,
-%               idxgroup  = Class options,
-%               printtype = \textit{option}
-%              ]{Option}{option}
 %
 % To use this class, simply specify it as the document class.^^A
 % \footnote{You can also find a complete example usage of this class in \autoref{sec:example}.}
@@ -120,14 +112,17 @@
 % \begin{quote}
 % \verb|\documentclass|\oarg{options}\verb|{rub-kunstgeschichte}|
 % \end{quote}
-% The \meta{options} are key/value pairs that defer to a default value when only the key is given. \\
+% The \meta{options} are key/value pairs that defer to a default value when only the key is given.
 %
-% \DescribeOption{parskip}
-% \DescribeOption{noparskip}
-% Boolean (default: \opt{true}).
+% \begin{description}
+% \ItemDescribeOption{parskip}
+% \DescribeDefault{\optn{true}}
 % Specify wether to load the \pkg{parskip} package to remove indentation at the start of paragraphs.
-% If neither of the keys are given, the package is loaded by default.
-%
+% \ItemDescribeOption{noparskip}
+% \DescribeDefault{\optn{true}}
+% The complementary option to the \optn{parskip} option.
+% \end{description}
+% % If neither \optn{parksip} nor \optn{noparskip} are given, the \pkg{parskip} package is loaded by default.
 %
 % \StopEventually{}
 %
@@ -183,7 +178,7 @@
 %    \end{macrocode}
 %
 % \subsection{Base class}\label{sec:implementation:base-class}
-% The \cls{\jobname} class is based on the \cls{article} class.
+% The \pkg{\jobname} class is based on the \pkg{article} class.
 % When loading the class we specify \texttt{12pt} as the base font size, as required by the guidelines.
 % \iffalse
 %% Load base class with 12pt base font size
@@ -196,7 +191,7 @@
 %
 % \paragraph{Line spacing}
 % To achieve 1.5 times line spacing as required by the guidelines,
-% we simply load the package \pkg{setspace} with the \opt{onehalfspacing} option.
+% we simply load the package \pkg{setspace} with the \optn{onehalfspacing} option.
 % \iffalse
 %% Set 1.5 times line spacing
 % \fi
@@ -244,7 +239,7 @@
 % Let's examine the contents of this example .tex file step by step
 % to highlight features of this class that were used.
 %
-% First, the \cls{rub-kunstgeschichte} class is loaded
+% First, the \pkg{rub-kunstgeschichte} class is loaded
 % \iffalse
 %% Load the rub-kunstgeschichte class
 % \fi
