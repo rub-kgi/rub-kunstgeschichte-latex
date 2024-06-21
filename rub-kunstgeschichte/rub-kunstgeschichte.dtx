@@ -178,6 +178,7 @@
 %    \end{macrocode}
 %
 % \subsection{Base class}\label{sec:implementation:base-class}
+% \DescribeClass{article}
 % The \pkg{\jobname} class is based on the \pkg{article} class.
 % When loading the class we specify \texttt{12pt} as the base font size, as required by the guidelines.
 % \iffalse
@@ -189,7 +190,7 @@
 %
 % \subsection{Loading packages}\label{sec:implementation:package-loading}
 %
-% \paragraph{Line spacing}
+% \DescribePackage{setspace}
 % To achieve 1.5 times line spacing as required by the guidelines,
 % we simply load the package \pkg{setspace} with the \optn{onehalfspacing} option.
 % \iffalse
@@ -199,7 +200,8 @@
 \RequirePackage[onehalfspacing]{setspace}
 %    \end{macrocode}
 %
-% \paragraph{Margins}
+% \DescribePackage{geometry}
+% Used to set page size and margins.
 % The guidelines require 2cm top, left and bottom margins as well as a 4cm correction margin on the right side.
 % Furthermore A4 paper is the standard page size here.
 % \iffalse
@@ -212,7 +214,7 @@
 ]{geometry}
 %    \end{macrocode}
 %
-% \paragraph{Paragraph indentation}
+% \DescribePackage{parskip}
 % To avoid indentation at the start of paragraphs, the \pkg{parskip} package is loaded if the corresponding switch is set to true. See also \autoref{sec:implementation:class-options}.
 % \iffalse
 %% Avoid paragraph indentation
