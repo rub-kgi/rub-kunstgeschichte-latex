@@ -33,6 +33,11 @@
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
+
+%^^A Load packages needed for the documentation
+\usepackage{dtxdescribe}
+\fvset{commandchars={|()}}
+
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
@@ -55,14 +60,9 @@
 % \DoNotIndex{\fi}
 %
 %^^A define helper commands for consistent typesetting in the documentation
-% \def\env{\texttt}
-% \def\opt{\texttt}
-% \def\cls{\textsf}
-% \def\pkg{\textsf}
-% \def\prg{\textsf}
 % \DeclareDocumentCommand\email{m}{\href{mailto:#1}{\nolinkurl{#1}}}
 %
-% \title{The \cls{\jobname} class^^A
+% \title{The \pkg{\jobname} class^^A
 %   \thanks{This document corresponds to \pkg{\jobname}~\fileversion,
 %     dated \filedate.}}
 % \author{\copyright{} Joran Schneyer^^A
@@ -84,50 +84,46 @@
 %
 % \section{Usage}\label{sec:usage}
 %
-%\NewDocElement[macrolike = false,
-%		        toplevel  = false,
-%               idxtype   = option,
-%               idxgroup  = Class options,
-%               printtype = \textit{option}
-%              ]{Option}{option}
-%
 % To use this class, simply specify it as the document class.^^A
 % \footnote{You can also find a complete example usage of this class in \autoref{sec:example}.}
-% \begin{verbatim}
+% \begin{sourceverb}
 % \documentclass{rub-kunstgeschichte}
-% \end{verbatim}
+% \end{sourceverb}
 %
 % \subsection{Caveats}
 % When using this class, some packages are loaded automatically with options (see also \autoref{sec:implementation:package-loading}).
 % That means that you can't reload the same package with different options without risking an option clash error.
-% The relevant packages offer other ways to change their options in the preamble.
-% \begin{itemize}
-%   \item \pkg{setspace} (to overwrite the 1.5 line-spacing)
-%   \begin{quote}
-%   Either \verb|\singlespacing|,
-%   \verb|\doublespacing|
-%   or for custom spacings also
-%   \verb|\setstretch|\marg{baselinestretch}.
-%   \end{quote}
-%   \item \pkg{geometry} package (e.g. for overwriting the page margin settings)
-%   \begin{quote}
-%   \verb|\geometry|\marg{options}
-%   \end{quote}
-% \end{itemize}
+% The relevant packages offer other ways to change their options in the preamble:
+%
+% \DescribePackage{setspace}
+% to overwrite the 1.5 line-spacing
+%
+% Either \verb|\singlespacing|,
+% \verb|\doublespacing|
+% or for custom spacing factors also
+% \verb|\setstretch|\marg{baselinestretch}.
+%
+% \DescribePackage{geometry}
+% e.g. for overwriting the page margin settings
+%
+% \verb|\geometry|\marg{options}
 %
 % \subsection{Class options}
 % You can pass several \meta{options} to the class by using
-% \begin{quote}
-% \verb|\documentclass|\oarg{options}\verb|{rub-kunstgeschichte}|
-% \end{quote}
-% The \meta{options} are key/value pairs that defer to a default value when only the key is given. \\
+% \begin{sourceverb}
+% \documentclass|oarg(options){rub-kunstgeschichte}
+% \end{sourceverb}
+% The \meta{options} are key/value pairs that defer to a default value when only the key is given.
 %
 % \DescribeOption{parskip}
-% \DescribeOption{noparskip}
-% Boolean (default: \opt{true}).
+% \DescribeDefault{\optn{true}}
 % Specify wether to load the \pkg{parskip} package to remove indentation at the start of paragraphs.
-% If neither of the keys are given, the package is loaded by default.
 %
+% \DescribeOption{noparskip}
+% \DescribeDefault{\optn{true}}
+% The complementary option to the \optn{parskip} option.
+%
+% % If neither \optn{parksip} nor \optn{noparskip} are given, the \pkg{parskip} package is automatically loaded by default.
 %
 % \StopEventually{}
 %
@@ -183,7 +179,8 @@
 %    \end{macrocode}
 %
 % \subsection{Base class}\label{sec:implementation:base-class}
-% The \cls{\jobname} class is based on the \cls{article} class.
+% \DescribeClass{article}
+% The \pkg{\jobname} class is based on the \pkg{article} class.
 % When loading the class we specify \texttt{12pt} as the base font size, as required by the guidelines.
 % \iffalse
 %% Load base class with 12pt base font size
@@ -194,9 +191,9 @@
 %
 % \subsection{Loading packages}\label{sec:implementation:package-loading}
 %
-% \paragraph{Line spacing}
+% \DescribePackage{setspace}
 % To achieve 1.5 times line spacing as required by the guidelines,
-% we simply load the package \pkg{setspace} with the \opt{onehalfspacing} option.
+% we simply load the package \pkg{setspace} with the \optn{onehalfspacing} option.
 % \iffalse
 %% Set 1.5 times line spacing
 % \fi
@@ -204,7 +201,8 @@
 \RequirePackage[onehalfspacing]{setspace}
 %    \end{macrocode}
 %
-% \paragraph{Margins}
+% \DescribePackage{geometry}
+% Used to set page size and margins.
 % The guidelines require 2cm top, left and bottom margins as well as a 4cm correction margin on the right side.
 % Furthermore A4 paper is the standard page size here.
 % \iffalse
@@ -217,7 +215,7 @@
 ]{geometry}
 %    \end{macrocode}
 %
-% \paragraph{Paragraph indentation}
+% \DescribePackage{parskip}
 % To avoid indentation at the start of paragraphs, the \pkg{parskip} package is loaded if the corresponding switch is set to true. See also \autoref{sec:implementation:class-options}.
 % \iffalse
 %% Avoid paragraph indentation
@@ -244,7 +242,7 @@
 % Let's examine the contents of this example .tex file step by step
 % to highlight features of this class that were used.
 %
-% First, the \cls{rub-kunstgeschichte} class is loaded
+% First, the \pkg{rub-kunstgeschichte} class is loaded
 % \iffalse
 %% Load the rub-kunstgeschichte class
 % \fi
