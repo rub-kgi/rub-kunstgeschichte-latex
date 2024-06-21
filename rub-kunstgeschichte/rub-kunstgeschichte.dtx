@@ -36,6 +36,7 @@
 
 %^^A Load packages needed for the documentation
 \usepackage{dtxdescribe}
+\fvset{commandchars={|()}}
 
 \EnableCrossrefs
 \CodelineIndex
@@ -85,9 +86,9 @@
 %
 % To use this class, simply specify it as the document class.^^A
 % \footnote{You can also find a complete example usage of this class in \autoref{sec:example}.}
-% \begin{verbatim}
+% \begin{sourceverb}
 % \documentclass{rub-kunstgeschichte}
-% \end{verbatim}
+% \end{sourceverb}
 %
 % \subsection{Caveats}
 % When using this class, some packages are loaded automatically with options (see also \autoref{sec:implementation:package-loading}).
@@ -109,9 +110,9 @@
 %
 % \subsection{Class options}
 % You can pass several \meta{options} to the class by using
-% \begin{quote}
-% \verb|\documentclass|\oarg{options}\verb|{rub-kunstgeschichte}|
-% \end{quote}
+% \begin{sourceverb}
+% \documentclass|oarg(options){rub-kunstgeschichte}
+% \end{sourceverb}
 % The \meta{options} are key/value pairs that defer to a default value when only the key is given.
 %
 % \DescribeOption{parskip}
