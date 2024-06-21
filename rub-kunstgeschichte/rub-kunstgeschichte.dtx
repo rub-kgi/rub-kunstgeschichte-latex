@@ -190,6 +190,84 @@
 %
 % \subsection{Loading packages}\label{sec:implementation:package-loading}
 %
+% \subsubsection{Bibliography}
+%
+% \DescribePackage{biblatex}
+% \changes{unreleased}{unreleased}{Use biblatex with authortitle-dw style from biblatex-dw package.}^^A
+% To support bibliography facilities out of the box, the \pkg{biblatex} package is loaded. To customize the behavior, a few options are passed to the package.
+% \iffalse
+%% biblatex options
+% \fi
+%    \begin{macrocode}
+\PassOptionsToPackage{
+%    \end{macrocode}
+%
+% \DescribeOption[biblatex]{backend}
+% Defines the backend program. To use all features of \pkg{biblatex}, the \prog{biber} backend must be used.
+%    \begin{macrocode}
+    backend=biber,
+%    \end{macrocode}
+%
+% \DescribeOption[biblatex]{singletitle}
+% Prints the title of a cited work in short citations only if there is more than one work of the same author.
+%    \begin{macrocode}
+    singletitle=true,
+%    \end{macrocode}
+%
+% \DescribeOption[biblatex]{autocite}
+% Defines the behavior of the \cs{autocite} command, which in this case will behave like the \cs{footcite} command and will print citations in the footnotes instead of directly in the text.
+%    \begin{macrocode}
+    autocite=footnote,
+%    \end{macrocode}
+%
+% \DescribeOption[biblatex]{autopunct}
+% Controls whether the citation commands scan ahead for punctuation marks.
+%    \begin{macrocode}
+    autopunct=false
+}{biblatex}
+%    \end{macrocode}
+%
+% \DescribePackage{biblatex-dw}
+% \iffalse
+%% biblatex-dw package
+% \fi
+% Further approximation of the suggested bibliography and citation styles in the guidelines is achieved by using the \pkg{biblatex-dw} package.
+% To use it, a few more options are passed to \pkg{biblatex}:
+%    \begin{macrocode}
+\PassOptionsToPackage{
+%    \end{macrocode}
+%
+% \DescribeOption[biblatex]{style}
+% The \optn{authortitle-dw} provided by the \pkg{biblatex-dw} package is probably the closest style to the one suggested in the guidelines.
+%    \begin{macrocode}
+    style=authortitle-dw,
+%    \end{macrocode}
+%
+% The following options are provided by the \pkg{biblatex-dw} package:
+%
+% \DescribeOption[biblatex]{firstfull}
+% Delivers a full citation for the first occurence of an entry.
+%    \begin{macrocode}
+    firstfull=true,
+%    \end{macrocode}
+%
+% \DescribeOption[biblatex]{addyear}
+% Adds the year of the publication after the title.
+%    \begin{macrocode}
+    addyear=true
+}{biblatex}
+%    \end{macrocode}
+%
+% And finally the \pkg{biblatex} package is loaded.
+% \iffalse
+%% load biblatex
+% \fi
+%    \begin{macrocode}
+\RequirePackage{biblatex}
+%    \end{macrocode}
+%
+% \subsubsection{Document format}
+%
 % \DescribePackage{setspace}
 % To achieve 1.5 times line spacing as required by the guidelines,
 % we simply load the package \pkg{setspace} with the \optn{onehalfspacing} option.
