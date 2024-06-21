@@ -97,6 +97,24 @@
 % \documentclass{rub-kunstgeschichte}
 % \end{verbatim}
 %
+% \subsection{Caveats}
+% When using this class, some packages are loaded automatically with options (see also \autoref{sec:implementation:package-loading}).
+% That means that you can't reload the same package with different options without risking an option clash error.
+% The relevant packages offer other ways to change their options in the preamble.
+% \begin{itemize}
+%   \item \pkg{setspace} (to overwrite the 1.5 line-spacing)
+%   \begin{quote}
+%   Either \verb|\singlespacing|,
+%   \verb|\doublespacing|
+%   or for custom spacings also
+%   \verb|\setstretch|\marg{baselinestretch}.
+%   \end{quote}
+%   \item \pkg{geometry} package (e.g. for overwriting the page margin settings)
+%   \begin{quote}
+%   \verb|\geometry|\marg{options}
+%   \end{quote}
+% \end{itemize}
+%
 % \subsection{Class options}
 % You can pass several \meta{options} to the class by using
 % \begin{quote}
