@@ -337,11 +337,52 @@
 \author{Joran Schneyer}
 %    \end{macrocode}
 %
+% For citations, the bibtex entries are usually written to a seperate \texttt{.bib} file.
+% For the sake of this example we keep everything in one \texttt{.tex} file and use the \env{filecontents} environment instead.
+% \iffalse
+
+%% bibliography file
+% \fi
+%    \begin{macrocode}
+\begin{filecontents}{rub-kunstgeschichte-example.bib}
+@article{exampleArticle,
+    author  = {Maxi Mustermann},
+    title   = {A very interesting article},
+    year    = {2001},
+    journal = {Important journal},
+}
+@online{exampleWebsite,
+    author  = {{Example consortium}},
+    title   = {The truth about example documents},
+    year    = {2020},
+    note    = {Internet forum article},
+    url     = {https://example.com},
+    urldate = {2100-04-01},
+}
+@book{exampleBook,
+    author    = {John Smith},
+    title     = {A long book},
+    year      = {2024},
+    publisher = {The finest publisher},
+}
+\end{filecontents}
+%    \end{macrocode}
+% \iffalse
+
+% \fi
+% After that, we need to load the bibliography to use it with biblatex.
+%    \begin{macrocode}
+\addbibresource{rub-kunstgeschichte-example.bib}
+%    \end{macrocode}
+%
 % Naturally, we begin the document environment and typeset the title
 %    \begin{macrocode}
 \begin{document}
     \maketitle
 %    \end{macrocode}
+% \iffalse
+
+% \fi
 %
 % Next we need some text to show some features.
 % The text in the example itself will explain the features used.
@@ -352,6 +393,20 @@
     And now I am ending this paragraph.
 
     The next paragraph should not have any indentation.
+
+    This is how you cite sources\autocite{exampleArticle}.
+    Maybe you want to add page numbers\autocite[394]{exampleBook}
+    or a citation signal\autocite[see][]{exampleWebsite}.
+    You can even cite multiple sources at once\autocites[111]
+    {exampleBook}[see also][13]{exampleArticle}.
+%    \end{macrocode}
+% \iffalse
+
+% \fi
+%
+% At the end we include a bibliography.
+%    \begin{macrocode}
+    \printbibliography
 %    \end{macrocode}
 %
 % Finally we end the document environment
