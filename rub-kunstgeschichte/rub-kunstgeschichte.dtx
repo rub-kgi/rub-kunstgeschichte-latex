@@ -94,6 +94,13 @@
 % That means that you can't reload the same package with different options without risking an option clash error.
 % The relevant packages offer other ways to change their options in the preamble:
 %
+% \DescribePackage{biblatex}
+% to customize citations and bibliography.
+%
+% \verb|\ExecuteBibliographyOptions|\oarg{entrytype}\marg{options} can be used to set most options,
+% but some can only be set at the time of loading the \pkg{biblatex} package.
+% Those can be set in the class options using the \optn{biblatex} key (see also \autoref{sec:usage:class-options}).
+%
 % \DescribePackage{setspace}
 % to overwrite the 1.5 line-spacing
 %
@@ -107,12 +114,15 @@
 %
 % \verb|\geometry|\marg{options}
 %
-% \subsection{Class options}
+% \subsection{Class options}\label{sec:usage:class-options}
 % You can pass several \meta{options} to the class by using
 % \begin{sourceverb}
 % \documentclass|oarg(options){rub-kunstgeschichte}
 % \end{sourceverb}
-% The \meta{options} are key/value pairs that defer to a default value when only the key is given.
+% The \meta{options} are key/value pairs that sometimes defer to a default value when only the key is given.
+%
+% \DescribeOption{biblatex}
+% Pass along options to the \pkg{biblatex} package. They overwrite default options set by this class.
 %
 % \DescribeOption{parskip}
 % \DescribeDefault{\optn{true}}
@@ -141,6 +151,17 @@
 % \fi
 % The class options are defined as keyval options for great flexibility.
 % They toggle some of the class features or customize their behavior.
+%
+% \begin{option}{biblatex}
+% The \optn{biblatex} option stores its content in a macro until it is later passed along to the \pkg{biblatex} package after specifying the default options (see \autoref{sec:implementation:package-loading:bibliography}).
+% Therefore, options provided with this key overwrite the ones set per default by this class.
+%    \begin{macrocode}
+\DeclareKeys[rubkgi]{
+    biblatex.store = \@rubkgi@biblatexOptions,
+    biblatex.usage = load
+}
+%    \end{macrocode}
+% \end{option}
 %
 % \paragraph{Paragraph indentation}
 % First we define a TeX switch which is later used (see \autoref{sec:implementation:package-loading}) to check wether to load the \pkg{parskip} package to remove the indentation at the start of paragraphs.
@@ -189,6 +210,92 @@
 %    \end{macrocode}
 %
 % \subsection{Loading packages}\label{sec:implementation:package-loading}
+%
+% \subsubsection{Bibliography}\label{sec:implementation:package-loading:bibliography}
+%
+% \DescribePackage{biblatex}
+% \changes{unreleased}{unreleased}{Use biblatex with authortitle-dw style from biblatex-dw package.}^^A
+% To support bibliography facilities out of the box, the \pkg{biblatex} package is loaded. To customize the behavior, a few options are passed to the package.
+% \iffalse
+%% biblatex options
+% \fi
+%    \begin{macrocode}
+\PassOptionsToPackage{
+%    \end{macrocode}
+%
+% \DescribeOption[biblatex]{backend}
+% Defines the backend program. To use all features of \pkg{biblatex}, the \prog{biber} backend must be used.
+%    \begin{macrocode}
+    backend=biber,
+%    \end{macrocode}
+%
+% \DescribeOption[biblatex]{singletitle}
+% Prints the title of a cited work in short citations only if there is more than one work of the same author.
+%    \begin{macrocode}
+    singletitle=true,
+%    \end{macrocode}
+%
+% \DescribeOption[biblatex]{autocite}
+% Defines the behavior of the \cs{autocite} command, which in this case will behave like the \cs{footcite} command and will print citations in the footnotes instead of directly in the text.
+%    \begin{macrocode}
+    autocite=footnote,
+%    \end{macrocode}
+%
+% \DescribeOption[biblatex]{autopunct}
+% Controls whether the citation commands scan ahead for punctuation marks.
+%    \begin{macrocode}
+    autopunct=false
+}{biblatex}
+%    \end{macrocode}
+%
+% \DescribePackage{biblatex-dw}
+% \iffalse
+%% biblatex-dw package
+% \fi
+% Further approximation of the suggested bibliography and citation styles in the guidelines is achieved by using the \pkg{biblatex-dw} package.
+% To use it, a few more options are passed to \pkg{biblatex}:
+%    \begin{macrocode}
+\PassOptionsToPackage{
+%    \end{macrocode}
+%
+% \DescribeOption[biblatex]{style}
+% The \optn{authortitle-dw} provided by the \pkg{biblatex-dw} package is probably the closest style to the one suggested in the guidelines.
+%    \begin{macrocode}
+    style=authortitle-dw,
+%    \end{macrocode}
+%
+% The following options are provided by the \pkg{biblatex-dw} package:
+%
+% \DescribeOption[biblatex]{firstfull}
+% Delivers a full citation for the first occurence of an entry.
+%    \begin{macrocode}
+    firstfull=true,
+%    \end{macrocode}
+%
+% \DescribeOption[biblatex]{addyear}
+% Adds the year of the publication after the title.
+%    \begin{macrocode}
+    addyear=true
+}{biblatex}
+%    \end{macrocode}
+%
+% After specifying the default options, we pass along the ones that might have been set in the class options.
+% \iffalse
+%% pass biblatex class options along
+% \fi
+%    \begin{macrocode}
+\PassOptionsToPackage{\@rubkgi@biblatexOptions}{biblatex}
+%    \end{macrocode}
+%
+% And finally the \pkg{biblatex} package is loaded.
+% \iffalse
+%% load biblatex
+% \fi
+%    \begin{macrocode}
+\RequirePackage{biblatex}
+%    \end{macrocode}
+%
+% \subsubsection{Document format}
 %
 % \DescribePackage{setspace}
 % To achieve 1.5 times line spacing as required by the guidelines,
@@ -259,11 +366,52 @@
 \author{Joran Schneyer}
 %    \end{macrocode}
 %
+% For citations, the bibtex entries are usually written to a seperate \texttt{.bib} file.
+% For the sake of this example we keep everything in one \texttt{.tex} file and use the \env{filecontents} environment instead.
+% \iffalse
+
+%% bibliography file
+% \fi
+%    \begin{macrocode}
+\begin{filecontents}{rub-kunstgeschichte-example.bib}
+@article{exampleArticle,
+    author  = {Maxi Mustermann},
+    title   = {A very interesting article},
+    year    = {2001},
+    journal = {Important journal},
+}
+@online{exampleWebsite,
+    author  = {{Example consortium}},
+    title   = {The truth about example documents},
+    year    = {2020},
+    note    = {Internet forum article},
+    url     = {https://example.com},
+    urldate = {2100-04-01},
+}
+@book{exampleBook,
+    author    = {John Smith},
+    title     = {A long book},
+    year      = {2024},
+    publisher = {The finest publisher},
+}
+\end{filecontents}
+%    \end{macrocode}
+% \iffalse
+
+% \fi
+% After that, we need to load the bibliography to use it with biblatex.
+%    \begin{macrocode}
+\addbibresource{rub-kunstgeschichte-example.bib}
+%    \end{macrocode}
+%
 % Naturally, we begin the document environment and typeset the title
 %    \begin{macrocode}
 \begin{document}
     \maketitle
 %    \end{macrocode}
+% \iffalse
+
+% \fi
 %
 % Next we need some text to show some features.
 % The text in the example itself will explain the features used.
@@ -274,6 +422,20 @@
     And now I am ending this paragraph.
 
     The next paragraph should not have any indentation.
+
+    This is how you cite sources\autocite{exampleArticle}.
+    Maybe you want to add page numbers\autocite[394]{exampleBook}
+    or a citation signal\autocite[see][]{exampleWebsite}.
+    You can even cite multiple sources at once\autocites[111]
+    {exampleBook}[see also][13]{exampleArticle}.
+%    \end{macrocode}
+% \iffalse
+
+% \fi
+%
+% At the end we include a bibliography.
+%    \begin{macrocode}
+    \printbibliography
 %    \end{macrocode}
 %
 % Finally we end the document environment
