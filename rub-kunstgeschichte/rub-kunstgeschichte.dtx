@@ -99,6 +99,7 @@
 %
 % \verb|\ExecuteBibliographyOptions|\oarg{entrytype}\marg{options} can be used to set most options,
 % but some can only be set at the time of loading the \pkg{biblatex} package.
+% Those can be set in the class options using the \optn{biblatex} key (see also \autoref{sec:usage:class-options}).
 %
 % \DescribePackage{setspace}
 % to overwrite the 1.5 line-spacing
@@ -113,12 +114,15 @@
 %
 % \verb|\geometry|\marg{options}
 %
-% \subsection{Class options}
+% \subsection{Class options}\label{sec:usage:class-options}
 % You can pass several \meta{options} to the class by using
 % \begin{sourceverb}
 % \documentclass|oarg(options){rub-kunstgeschichte}
 % \end{sourceverb}
-% The \meta{options} are key/value pairs that defer to a default value when only the key is given.
+% The \meta{options} are key/value pairs that sometimes defer to a default value when only the key is given.
+%
+% \DescribeOption{biblatex}
+% Pass along options to the \pkg{biblatex} package. They overwrite default options set by this class.
 %
 % \DescribeOption{parskip}
 % \DescribeDefault{\optn{true}}
@@ -147,6 +151,17 @@
 % \fi
 % The class options are defined as keyval options for great flexibility.
 % They toggle some of the class features or customize their behavior.
+%
+% \begin{option}{biblatex}
+% The \optn{biblatex} option stores its content in a macro until it is later passed along to the \pkg{biblatex} package after specifying the default options (see \autoref{sec:implementation:package-loading:bibliography}).
+% Therefore, options provided with this key overwrite the ones set per default by this class.
+%    \begin{macrocode}
+\DeclareKeys[rubkgi]{
+    biblatex.store = \@rubkgi@biblatexOptions,
+    biblatex.usage = load
+}
+%    \end{macrocode}
+% \end{option}
 %
 % \paragraph{Paragraph indentation}
 % First we define a TeX switch which is later used (see \autoref{sec:implementation:package-loading}) to check wether to load the \pkg{parskip} package to remove the indentation at the start of paragraphs.
@@ -196,7 +211,7 @@
 %
 % \subsection{Loading packages}\label{sec:implementation:package-loading}
 %
-% \subsubsection{Bibliography}
+% \subsubsection{Bibliography}\label{sec:implementation:package-loading:bibliography}
 %
 % \DescribePackage{biblatex}
 % \changes{unreleased}{unreleased}{Use biblatex with authortitle-dw style from biblatex-dw package.}^^A
@@ -262,6 +277,14 @@
 %    \begin{macrocode}
     addyear=true
 }{biblatex}
+%    \end{macrocode}
+%
+% After specifying the default options, we pass along the ones that might have been set in the class options.
+% \iffalse
+%% pass biblatex class options along
+% \fi
+%    \begin{macrocode}
+\PassOptionsToPackage{\@rubkgi@biblatexOptions}{biblatex}
 %    \end{macrocode}
 %
 % And finally the \pkg{biblatex} package is loaded.
