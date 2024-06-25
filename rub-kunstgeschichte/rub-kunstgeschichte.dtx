@@ -104,6 +104,12 @@
 % but some can only be set at the time of loading the \pkg{biblatex} package.
 % Those can be set in the class options using the \optn{biblatex} key (see also \autoref{sec:usage:class-options}).
 %
+% \DescribePackage{hyperref}
+% Customize behavior of clickable elements and pdf meta-data.
+%
+% \verb|\hypersetup|\marg{options} should be used for nearly all options.
+% The few options that can only be given at load time of the package have to be passed along using the \optn{hyperref} class option (see also \autoref{sec:usage:class-options}).
+%
 % \DescribePackage{setspace}
 % Overwrite the 1.5 line-spacing setting.
 %
@@ -126,6 +132,10 @@
 %
 % \DescribeOption{biblatex}
 % Pass along options to the \pkg{biblatex} package. They overwrite default options set by this class.
+%
+% \DescribeOption{hyperref}
+% Pass along options to the \pkg{biblatex} package. They do \textbf{not} overwrite default options set by this class as they are set after loading the package using the \verb|\hypersetup| command.
+% To overwrite them, use \verb|\hypersetup|\marg{options} in the preamble.
 %
 % \DescribeOption{parskip}
 % \DescribeDefault{\optn{true}}
@@ -162,6 +172,17 @@
 \DeclareKeys[rubkgi]{
     biblatex.store = \@rubkgi@biblatexOptions,
     biblatex.usage = load
+}
+%    \end{macrocode}
+% \end{option}
+%
+% \begin{option}{hyperref}
+% The \optn{hyperref} option passes its content along immediately, to be used as options when the \pkg{hyperref} package is loaded.
+% This will \textbf{not} overwrite default options set by this class as they are set after loading the package using \verb|\hypersetup|\marg{options} (see also \autoref{sec:implementation:package-loading:others}).
+%    \begin{macrocode}
+\DeclareKeys[rubkgi]{
+    hyperref.code  = \PassOptionsToPackage{#1}{hyperref},
+    hyperref.usage = load
 }
 %    \end{macrocode}
 % \end{option}
@@ -336,7 +357,7 @@
 \fi
 %    \end{macrocode}
 %
-% \subsubsection{Other useful packages}
+% \subsubsection{Other useful packages}\label{sec:implementation:package-loading:others}
 %
 % \DescribePackage{hyperref}
 % \changes{unreleased}{unreleased}{Use hyperref for clickable links and references.}^^A
