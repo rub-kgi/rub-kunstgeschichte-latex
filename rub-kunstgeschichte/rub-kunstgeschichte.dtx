@@ -57,6 +57,9 @@
 % \DoNotIndex{\newcommand,\newenvironment}
 % \DoNotIndex{\begin,\end}
 % \DoNotIndex{\fi}
+% \DoNotIndex{\section,\subsection,\subsubsection}
+% \DoNotIndex{\title,\author,\tableofcontents}
+% \DoNotIndex{\LaTeX,\verb}
 %
 %^^A define helper commands for consistent typesetting in the documentation
 % \DeclareDocumentCommand\email{m}{\href{mailto:#1}{\nolinkurl{#1}}}
@@ -338,16 +341,14 @@
 %</class>
 %<*example>
 % \fi
+% \clearpage
 %
 % \section{Example}\label{sec:example}
 %
 % To further exemplify the use of this class,
-% we create an example .tex file.
-% The full \texttt{rub-kunstgeschichte-example.tex} and the corresponding \texttt{rub-kunstgeschichte-example.pdf} are available on GitHub.^^A
+% we create an example \filenm{.tex} file.
+% The full \filenm{rub-kunstgeschichte-example.tex} and the corresponding \PDF{} are available on GitHub.^^A
 % \footnote{\url{https://github.com/rub-kgi/rub-kunstgeschichte-latex/releases}}
-%
-% Let's examine the contents of this example .tex file step by step
-% to highlight features of this class that were used.
 %
 % First, the \pkg{rub-kunstgeschichte} class is loaded
 % \iffalse
@@ -360,17 +361,17 @@
 
 % \fi
 %
-% and then the information needed to typeset a title is given:
+% followed by the information that is needed to typeset a title:
 %    \begin{macrocode}
 \title{Example usage of the \textsf{rub-kunstgeschichte} class}
 \author{Joran Schneyer}
 %    \end{macrocode}
 %
-% For citations, the bibtex entries are usually written to a seperate \texttt{.bib} file.
-% For the sake of this example we keep everything in one \texttt{.tex} file and use the \env{filecontents} environment instead.
+% For citations, the bibtex entries are usually written to a seperate \filenm{.bib} file.
+% For the sake of this example we keep everything in one \filenm{.tex} file and use the \env{filecontents} environment instead.
 % \iffalse
 
-%% bibliography file
+%% bibliography file (usually you would put this in a seperate .bib file)
 % \fi
 %    \begin{macrocode}
 \begin{filecontents}{rub-kunstgeschichte-example.bib}
@@ -378,7 +379,12 @@
     author  = {Maxi Mustermann},
     title   = {A very interesting article},
     year    = {2001},
-    journal = {Important journal},
+    journal = {Important example journal}
+}
+@book{exampleBook,
+    author    = {John Smith},
+    title     = {A long example book},
+    year      = {2024}
 }
 @online{exampleWebsite,
     author  = {{Example consortium}},
@@ -386,13 +392,22 @@
     year    = {2020},
     note    = {Internet forum article},
     url     = {https://example.com},
-    urldate = {2100-04-01},
+    urldate = {2100-04-01}
 }
-@book{exampleBook,
-    author    = {John Smith},
-    title     = {A long book},
-    year      = {2024},
-    publisher = {The finest publisher},
+@manual{biblatexDocs,
+    author   = {Philip Kime and Moritz Wemheuer and Philipp Lehman},
+    title    = {The biblatex Package},
+    subtitle = {Programmable Bibliographies and Citations},
+    year     = {2024},
+    url      = {https://ctan.org/pkg/biblatex},
+    urldate  = {2024-06-25}
+}
+@online{biblatexCheatsheet,
+    title   = {Biblatex Cheat Sheet},
+    author  = {Clea F. Rees},
+    year    = {2017},
+    url     = {https://ctan.org/pkg/biblatex-cheatsheet},
+    urldate = {2024-06-25}
 }
 \end{filecontents}
 %    \end{macrocode}
@@ -404,36 +419,69 @@
 \addbibresource{rub-kunstgeschichte-example.bib}
 %    \end{macrocode}
 %
-% Naturally, we begin the document environment and typeset the title
+% Having finished the preamble, we begin the document, typeset the title and include a table of contents.
 %    \begin{macrocode}
 \begin{document}
     \maketitle
+    \tableofcontents
 %    \end{macrocode}
 % \iffalse
 
 % \fi
 %
-% Next we need some text to show some features.
-% The text in the example itself will explain the features used.
+% Next we add different sections that explain common usage and some features of this class.
 %    \begin{macrocode}
-    Here is some text.
-    Note, how the typeset text has 12pt font size as specified
-    and there is a 1.5 times line-spacing present.
-    And now I am ending this paragraph.
+    \section{Introduction}
+    The \textsf{rub-kunstgeschichte} class aims to implement
+    the guidelines on scientific writing of the art history institute
+    ``KGI'' (\textit{Kunstgeschichtliches Institut})
+    at Ruhr University Bochum.
 
-    The next paragraph should not have any indentation.
+    This example document showcases a typical use
+    of the \textsf{rub-kunstgeschichte} class.
+    Just by using the class, the page is already formatted
+    so that the typeset text has 12pt font size,
+    there is a 1.5 times line-spacing present
+    and the page size is A4 with 2cm margins at top, left and bottom,
+    as well as a 4cm margin on the right.
 
-    This is how you cite sources\autocite{exampleArticle}.
-    Maybe you want to add page numbers\autocite[394]{exampleBook}
-    or a citation signal\autocite[see][]{exampleWebsite}.
-    You can even cite multiple sources at once\autocites[111]
-    {exampleBook}[see also][13]{exampleArticle}.
+    Also, paragraphs don't have an indentation
+    in the first line by default,
+    contrary to typical \LaTeX{} documents.
+
+    \section{How to cite sources}
+    This class automatically loads the \texttt{biblatex} package
+    for sophisticated bibliography and citations.
+    The class also sets some options by default
+    that make \texttt{biblatex} behave closer to the
+    suggested citation style in the guidelines of the institute.
+
+    You can cite sources using the \verb|\autocite| command,
+    which is configured by this class to use footnotes
+    \autocite{exampleArticle}.
+    Page numbers can be added in the optional argument
+    \autocite[394]{exampleBook}
+    and citation signals in a second one
+    that comes before the one for page numbers
+    \autocite[see][]{exampleWebsite}.
+    You can even cite multiple sources at once
+    using the \verb|\autocites| command
+    \autocites[111]{exampleBook}[see also][13]{exampleArticle}.
+
+    For more information refer to the documentation
+    of the \texttt{biblatex} package
+    \autocite{biblatexDocs}
+    or the biblatex cheatsheet
+    \autocite{biblatexCheatsheet}.
+
+    At the end of the document we can include a bibliography
+    containing all cited sources with \verb|\printbibliography|.
 %    \end{macrocode}
 % \iffalse
 
 % \fi
 %
-% At the end we include a bibliography.
+% As suggested in the example document itself, we include the bibliography.
 %    \begin{macrocode}
     \printbibliography
 %    \end{macrocode}
@@ -442,6 +490,7 @@
 %    \begin{macrocode}
 \end{document}
 %    \end{macrocode}
+% \clearpage
 % \iffalse
 
 %</example>
