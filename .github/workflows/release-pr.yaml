@@ -1,0 +1,105 @@
+name: Upgrade version and create release PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version increment'
+        required: true
+        default: 'minor'
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+
+jobs:
+  create_release_pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      # Check out the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      # Set up Git as github-actions bot
+      - name: Set up Git
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+      # Update version number
+      - name: Get current version number
+        id: get_current_version
+        working-directory: ./rub-kunstgeschichte
+        run: |
+          echo "current_version=$(grep -Pzo '\\ProvidesClass\{rub-kunstgeschichte\}(.|\n)*?\[\d{4}-\d{2}-\d{2} v\K\d+\.\d+\.\d+' rub-kunstgeschichte.dtx | tr '\0' '\n')" >> "$GITHUB_OUTPUT"
+      - name: Extract MAJOR, MINOR and PATCH version numbers
+        id: extract_major_minor_patch
+        env:
+          VERSION_FULL: ${{ steps.get_current_version.outputs.current_version }}
+        run: |
+          echo "version_major=$(echo $VERSION_FULL | grep -Po '^\d+')" >> "$GITHUB_OUTPUT"
+          echo "version_minor=$(echo $VERSION_FULL | grep -Po '^\d+\.\K\d+')" >> "$GITHUB_OUTPUT"
+          echo "version_patch=$(echo $VERSION_FULL | grep -Po '^\d+\.\d+\.\K\d+')" >> "$GITHUB_OUTPUT"
+      - name: Calculate next version number
+        id: calculate_new_version
+        env:
+          NEW_VERSION_MAJOR: ${{ steps.extract_major_minor_patch.outputs.version_major }}
+          NEW_VERSION_MINOR: ${{ steps.extract_major_minor_patch.outputs.version_minor }}
+          NEW_VERSION_PATCH: ${{ steps.extract_major_minor_patch.outputs.version_patch }}
+          VERSION_BUMP: ${{ github.event.inputs.version }}
+        run: |
+          if [ $VERSION_BUMP = "major" ]
+          then
+            NEW_VERSION_MAJOR=$(($NEW_VERSION_MAJOR + 1))
+          elif [ $VERSION_BUMP = "minor" ]
+          then
+            NEW_VERSION_MINOR=$(($NEW_VERSION_MINOR + 1))
+          else
+            NEW_VERSION_PATCH=$(($NEW_VERSION_PATCH + 1))
+          fi
+          echo "new_version=$NEW_VERSION_MAJOR.$NEW_VERSION_MINOR.$NEW_VERSION_PATCH" >> "$GITHUB_OUTPUT"
+      # Update version
+      - name: Tag version with l3build
+        uses: addnab/docker-run-action@v3
+        with:
+          image: registry.gitlab.com/islandoftex/images/texlive:TL2024-2024-05-19-full
+          options: -v ${{ github.workspace }}/rub-kunstgeschichte:/workspace -e NEW_VERSION=${{ steps.calculate_new_version.outputs.new_version }}
+          run: |
+            cd /workspace
+            l3build tag $NEW_VERSION
+      - name: Tag version in CHANGELOG.md
+        env:
+          NEW_VERSION: ${{ steps.calculate_new_version.outputs.new_version }}
+        run: |
+          RELEASE_DATE=$(date +%F)
+          NEW_CHANGELOG_HEADER="## [v$NEW_VERSION] - $RELEASE_DATE"
+          sed -i "/## \[Unreleased\]/a \\\n$NEW_CHANGELOG_HEADER" CHANGELOG.md
+      # Commit changes and create pull request
+      - name: Commit version bump changes
+        id: commit_version_bump
+        run: |
+          git commit -a -m "Automated version bump to v${{ steps.calculate_new_version.outputs.new_version }}"
+          git push
+      - name: Create release branch
+        id: create_release_branch
+        env:
+          RELEASE_BRANCH: release/${{ steps.calculate_new_version.outputs.new_version }}
+        run: |
+          git switch --create $RELEASE_BRANCH
+          git push -u origin $RELEASE_BRANCH
+      - name: Create release pull request
+        id: create_pr
+        run: echo "pull-request-url=$(gh pr create --base main --head $RELEASE_BRANCH --title "$PR_TITLE" --body "$PR_BODY")" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_BRANCH: release/${{ steps.calculate_new_version.outputs.new_version }}
+          PR_TITLE: "Release: ${{ steps.calculate_new_version.outputs.new_version }} Pull Request"
+          PR_BODY: "This pull request contains the version bump from ${{ steps.get_current_version.outputs.CURRENT_VERSION }} to ${{ steps.calculate_new_version.outputs.new_version }}. It was created automatically in the '${{ github.workflow }}' workflow triggered by @${{ github.triggering_actor }}."
+      # Summarize results
+      - name: Summarize job
+        env:
+          NEW_VERSION: ${{ steps.calculate_new_version.outputs.new_version }}
+        run: echo "Created [release PR](${{ steps.create_pr.outputs.pull-request-url }}) for version $NEW_VERSION" >> $GITHUB_STEP_SUMMARY
