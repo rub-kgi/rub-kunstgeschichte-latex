@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Move citation footnote marks after punctuation
+
 ## [v0.2.0] - 2024-09-06
 
 ### Added
