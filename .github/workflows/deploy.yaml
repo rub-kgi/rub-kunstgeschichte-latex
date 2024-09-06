@@ -83,3 +83,10 @@ jobs:
           ANNOUNCEMENT: ${{ steps.ctan_announcement.outputs.announcement }}
           VERSION_TAG: ${{ steps.get_new_version.outputs.version }}
           VERSION_DATE: ${{ steps.get_new_version.outputs.version-date }}
+      - name: CTAN Upload
+        working-directory: rub-kunstgeschichte
+        run: echo "y" | l3build upload --email "${{ secrets.CTAN_EMAIL }}" --message "$ANNOUNCEMENT" "$VERSION_TAG $VERSION_DATE"
+        env:
+          ANNOUNCEMENT: ${{ steps.ctan_announcement.outputs.announcement }}
+          VERSION_TAG: ${{ steps.get_new_version.outputs.version }}
+          VERSION_DATE: ${{ steps.get_new_version.outputs.version-date }}
