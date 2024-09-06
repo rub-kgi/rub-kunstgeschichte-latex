@@ -8,15 +8,15 @@ inputs:
     description: 'name or regex pattern to match for the class name to look for'
     default: '.*'
 outputs:
-  current-version:
-    description: 'The current release version'
-    value: ${{ steps.get_current_version.outputs.current-version }}
+  version:
+    description: 'The release version'
+    value: ${{ steps.get_version.outputs.version }}
 runs:
   using: "composite"
   steps:
-    - id: get_current_version
+    - id: get_version
       run: |
-        CURRENT_VERSION=$(grep -Pzo '\\ProvidesClass\{${{ inputs.class-name }}\}(.|\n)*?\[\d{4}-\d{2}-\d{2} v\K\d+\.\d+\.\d+' ${{ inputs.file }} | tr '\0' '\n')
-        echo "found version: $CURRENT_VERSION"
-        echo "current-version=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
+        VERSION=$(grep -Pzo '\\ProvidesClass\{${{ inputs.class-name }}\}(.|\n)*?\[\d{4}-\d{2}-\d{2} v\K\d+\.\d+\.\d+' ${{ inputs.file }} | tr '\0' '\n')
+        echo "found version: $VERSION"
+        echo "version=$VERSION" >> "$GITHUB_OUTPUT"
       shell: bash

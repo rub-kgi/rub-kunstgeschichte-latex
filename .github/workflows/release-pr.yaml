@@ -40,7 +40,7 @@ jobs:
       - name: Extract MAJOR, MINOR and PATCH version numbers
         id: extract_major_minor_patch
         env:
-          VERSION_FULL: ${{ steps.get_current_version.outputs.current-version }}
+          VERSION_FULL: ${{ steps.get_current_version.outputs.version }}
         run: |
           echo "version_major=$(echo $VERSION_FULL | grep -Po '^\d+')" >> "$GITHUB_OUTPUT"
           echo "version_minor=$(echo $VERSION_FULL | grep -Po '^\d+\.\K\d+')" >> "$GITHUB_OUTPUT"
@@ -99,7 +99,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_BRANCH: release/${{ steps.calculate_new_version.outputs.new_version }}
           PR_TITLE: "Release: ${{ steps.calculate_new_version.outputs.new_version }} Pull Request"
-          PR_BODY: "This pull request contains the version bump from ${{ steps.get_current_version.outputs.current-version }} to ${{ steps.calculate_new_version.outputs.new_version }}. It was created automatically in the '${{ github.workflow }}' workflow triggered by @${{ github.triggering_actor }}."
+          PR_BODY: "This pull request contains the version bump from ${{ steps.get_current_version.outputs.version }} to ${{ steps.calculate_new_version.outputs.new_version }}. It was created automatically in the '${{ github.workflow }}' workflow triggered by @${{ github.triggering_actor }}."
       # Summarize results
       - name: Summarize job
         env:
