@@ -8,6 +8,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    container: registry.gitlab.com/islandoftex/images/texlive:TL2024-2024-05-19-full
     permissions:
       contents: write
     steps:
@@ -45,13 +46,8 @@ jobs:
       # build documentation
       # and package a .zip for ctan
       - name: Run l3build
-        uses: addnab/docker-run-action@v3
-        with:
-          image: registry.gitlab.com/islandoftex/images/texlive:TL2024-2024-05-19-full
-          options: -v ${{ github.workspace }}/rub-kunstgeschichte:/workspace
-          run: |
-            cd /workspace
-            l3build ctan -q -H
+        run: l3build ctan -q -H
+        working-directory: rub-kunstgeschichte
 
       # Extract release notes from CHANGELOG.md
       - name: Extract release notes
@@ -72,11 +68,7 @@ jobs:
 
       # Automatic upload to CTAN
       - name: CTAN Verification
-        uses: addnab/docker-run-action@v3
-        with:
-          image: registry.gitlab.com/islandoftex/images/texlive:TL2024-2024-05-19-full
-          options: -v ${{ github.workspace }}/rub-kunstgeschichte:/workspace
-          run: |
-            cd /workspace
+        working-directory: rub-kunstgeschichte
+        run: |
             announcement=$(git tag -l --format="%(contents:subject)" v${{ steps.get_new_version.outputs.version }})
             echo "n" | l3build upload --dry-run --email "${{ secrets.CTAN_EMAIL }}" --message "$announcement" "${{ steps.get_new_version.outputs.version }} ${{ steps.get_new_version.outputs.version-date }}"
