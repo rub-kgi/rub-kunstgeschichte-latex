@@ -1,4 +1,4 @@
-name: Create release
+name: Automatically create release
 
 on:
   pull_request:
