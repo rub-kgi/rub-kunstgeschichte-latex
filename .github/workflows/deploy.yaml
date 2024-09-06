@@ -56,7 +56,7 @@ jobs:
       # Extract release notes from CHANGELOG.md
       - name: Extract release notes
         id: extract_release_notes
-        run: sed -n '/^## \[v0.2.0\]/,/^## \[v[0-9]\+\.[0-9]\+\.[0-9]\+\]/ { /^## \[v[0-9]\+\.[0-9]\+\.[0-9]\+\]/ !p; }' CHANGELOG.md | tee release_notes.md
+        run: sed -n '/^## \[${{ steps.get_new_version.outputs.version }}\]/,/^## \[v[0-9]\+\.[0-9]\+\.[0-9]\+\]/ { /^## \[v[0-9]\+\.[0-9]\+\.[0-9]\+\]/ !p; }' CHANGELOG.md | tee release_notes.md
 
       # Create a GitHub release
       - name: Release
@@ -79,4 +79,4 @@ jobs:
           run: |
             cd /workspace
             announcement=$(git tag -l --format="%(contents:subject)" v${{ steps.get_new_version.outputs.version }})
-            l3build upload "${{ steps.get_new_version.outputs.version }} ${{ steps.get_new_version.outputs.version-date }}" --email "${{ secrets.CTAN_EMAIL }}" --message "$announcement"
+            l3build upload --email "${{ secrets.CTAN_EMAIL }}" --message "$announcement" "${{ steps.get_new_version.outputs.version }} ${{ steps.get_new_version.outputs.version-date }}"
