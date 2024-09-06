@@ -1,0 +1,22 @@
+name: 'Get release version'
+description: 'Gets the most recent release version from the .dtx file'
+inputs:
+  file:
+    description: 'path to the .dtx file to search for the release version'
+    required: true
+  class-name:
+    description: 'name or regex pattern to match for the class name to look for'
+    default: '.*'
+outputs:
+  version:
+    description: 'The release version'
+    value: ${{ steps.get_version.outputs.version }}
+runs:
+  using: "composite"
+  steps:
+    - id: get_version
+      run: |
+        VERSION=$(grep -Pzo '\\ProvidesClass\{${{ inputs.class-name }}\}(.|\n)*?\[\d{4}-\d{2}-\d{2} v\K\d+\.\d+\.\d+' ${{ inputs.file }} | tr '\0' '\n')
+        echo "found version: $VERSION"
+        echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+      shell: bash

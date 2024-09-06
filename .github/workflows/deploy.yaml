@@ -1,33 +1,72 @@
-name: Create release
+name: Automatically create release
 
 on:
-  push:
-    tags:
-      - "v*"
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
 
 jobs:
   release:
     runs-on: ubuntu-latest
-    container: registry.gitlab.com/islandoftex/images/texlive:TL2024-2024-05-19-full
+    if: startsWith(github.event.pull_request.title, 'Release:') && startsWith(github.head_ref, 'release/')
     permissions:
       contents: write
     steps:
       # Check out the repository
       - name: Checkout repository
         uses: actions/checkout@v4
+      # Set up Git as github-actions bot
+      - name: Set up Git
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
 
       # Run automated testing
       # extract files from dtx
       # build documentation
       # and package a .zip for ctan
       - name: Run l3build
-        run: l3build ctan -q -H
-        working-directory: ./rub-kunstgeschichte
+        uses: addnab/docker-run-action@v3
+        with:
+          image: registry.gitlab.com/islandoftex/images/texlive:TL2024-2024-05-19-full
+          options: -v ${{ github.workspace }}/rub-kunstgeschichte:/workspace
+          run: |
+            cd /workspace
+            l3build ctan -q -H
+
+      # Get new version
+      - name: Get new version number
+        id: get_new_version
+        uses: ./.github/actions/get-release-version
+        with:
+          file: ./rub-kunstgeschichte/rub-kunstgeschichte.dtx
+          class-name: rub-kunstgeschichte
+
+      # Extract release notes from CHANGELOG.md
+      - name: Extract release notes
+        id: extract_release_notes
+        run: sed -n '/^## \[v0.2.0\]/,/^## \[v[0-9]\+\.[0-9]\+\.[0-9]\+\]/ { /^## \[v[0-9]\+\.[0-9]\+\.[0-9]\+\]/ !p; }' CHANGELOG.md | tee release_notes.md
+
+      # Tag new version
+      - name: Tag the commit
+        id: tag_commit
+        run: |
+          next_version=${{ steps.get_new_version.outputs.version }}
+          tag_name=v$next_version
+          git tag -a "$tag_name" -m "Version $next_version."
+          git push --follow-tags
+          echo "tag-name=$tag_name" >> "$GITHUB_OUTPUT"
 
       # Create a GitHub release
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.tag_commit.outputs.tag-name }}
+          name: Release ${{ steps.get_new_version.outputs.version }}
+          body_path: ./release_notes.md
           files: |
             rub-kunstgeschichte/build/unpacked/rub-kunstgeschichte.cls
             rub-kunstgeschichte/build/distrib/**/*.zip
