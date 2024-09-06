@@ -5,6 +5,8 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - rub-kunstgeschichte/*.*
   workflow_dispatch:
 
 jobs:
