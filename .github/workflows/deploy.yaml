@@ -45,7 +45,7 @@ jobs:
       # extract files from dtx
       # build documentation
       # and package a .zip for ctan
-      - name: Run l3build
+      - name: l3build test and ctan packaging
         run: l3build ctan -q -H
         working-directory: rub-kunstgeschichte
 
