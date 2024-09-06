@@ -67,8 +67,15 @@ jobs:
             rub-kunstgeschichte/build/unpacked/rub-kunstgeschichte-example.tex
 
       # Automatic upload to CTAN
+      - name: CTAN Announcement
+        id: ctan_announcement
+        run: |
+          announcement=$(git tag -l --format="%(contents:subject)" v${{ steps.get_new_version.outputs.version }})
+          echo "announcement=$announcement" >> "$GITHUB_OUTPUT"
       - name: CTAN Verification
         working-directory: rub-kunstgeschichte
-        run: |
-            announcement=$(git tag -l --format="%(contents:subject)" v${{ steps.get_new_version.outputs.version }})
-            echo "n" | l3build upload --dry-run --email "${{ secrets.CTAN_EMAIL }}" --message "$announcement" "${{ steps.get_new_version.outputs.version }} ${{ steps.get_new_version.outputs.version-date }}"
+        run: echo "n" | l3build upload --dry-run --email "${{ secrets.CTAN_EMAIL }}" --message "$ANNOUNCEMENT" "$VERSION_TAG $VERSION_DATE"
+        env:
+          ANNOUNCEMENT: ${{ steps.ctan_announcement.outputs.announcement }}
+          VERSION_TAG: ${{ steps.get_new_version.outputs.version }}
+          VERSION_DATE: ${{ steps.get_new_version.outputs.version-date }}
