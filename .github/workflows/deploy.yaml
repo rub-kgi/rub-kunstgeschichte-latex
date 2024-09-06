@@ -50,21 +50,11 @@ jobs:
         id: extract_release_notes
         run: sed -n '/^## \[v0.2.0\]/,/^## \[v[0-9]\+\.[0-9]\+\.[0-9]\+\]/ { /^## \[v[0-9]\+\.[0-9]\+\.[0-9]\+\]/ !p; }' CHANGELOG.md | tee release_notes.md
 
-      # Tag new version
-      - name: Tag the commit
-        id: tag_commit
-        run: |
-          next_version=${{ steps.get_new_version.outputs.version }}
-          tag_name=v$next_version
-          git tag -a "$tag_name" -m "Version $next_version."
-          git push --follow-tags
-          echo "tag-name=$tag_name" >> "$GITHUB_OUTPUT"
-
       # Create a GitHub release
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.tag_commit.outputs.tag-name }}
+          tag_name: v${{ steps.get_new_version.outputs.version }}
           name: Release ${{ steps.get_new_version.outputs.version }}
           body_path: ./release_notes.md
           files: |
