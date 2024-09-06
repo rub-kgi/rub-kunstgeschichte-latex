@@ -10,7 +10,7 @@ inputs:
 outputs:
   version:
     description: 'The release version'
-    value: ${{ steps.get_version.outputs.version }}
+    value: ${{ steps.get_version_tag.outputs.version }}
   version-date:
     description: 'The date of the release'
     value: ${{ steps.get_version_date.outputs.version-date }}
