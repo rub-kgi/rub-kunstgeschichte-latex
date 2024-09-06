@@ -31,9 +31,9 @@ jobs:
 
       # Check that the version number in the code and the one of the git tag match
       - name: Check version number
-        if: ${{ github.ref_name }} != ${{ steps.get_new_version.outputs.version }}
+        if: ${{ github.ref_name }} != v${{ steps.get_new_version.outputs.version }}
         run: |
-          echo "::error title={Version numbers don't match!}::{The version number of the git tag '${{ github.ref_name }}' does not match the one in the code '${{ steps.get_new_version.outputs.version }}'.}"
+          echo "::error title={Version numbers don't match!}::{The version number of the git tag '${{ github.ref_name }}' does not match the one in the code 'v${{ steps.get_new_version.outputs.version }}'.}"
           exit 1
 
       # Run automated testing
