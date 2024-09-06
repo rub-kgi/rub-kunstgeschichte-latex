@@ -46,12 +46,21 @@ jobs:
           git tag -a "$next_version" -m "$Version next_version. See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details."
           git push --follow-tags
 
+      # Extract release notes from CHANGELOG.md
+      - name: Extract release notes
+        id: extract_release_notes
+        run: |
+          RELEASE_NOTES_PATH=${{ github.workspace }}/release_notes.md
+          sed -n '/^## \[${{ steps.get_new_version.outputs.version }}\]/,/^## \[v[0-9]\+\.[0-9]\+\.[0-9]\+\]/ { /^## \[v[0-9]\+\.[0-9]\+\.[0-9]\+\]/ !p; }' CHANGELOG.md > $RELEASE_NOTES_PATH
+          echo "release-notes-path=$RELEASE_NOTES_PATH" >> "$GITHUB_OUTPUT"
+
       # Create a GitHub release
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.get_new_version.outputs.version }}
           name: Release ${{ steps.get_new_version.outputs.version }}
+          body_path: ${{ steps.extract_release_notes.outputs.release-notes-path }}
           files: |
             rub-kunstgeschichte/build/unpacked/rub-kunstgeschichte.cls
             rub-kunstgeschichte/build/distrib/**/*.zip
