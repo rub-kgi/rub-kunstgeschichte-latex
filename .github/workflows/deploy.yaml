@@ -31,10 +31,14 @@ jobs:
 
       # Check that the version number in the code and the one of the git tag match
       - name: Check version number
-        if: ${{ github.ref_name }} != v${{ steps.get_new_version.outputs.version }}
         run: |
-          echo "::error title={Version numbers don't match!}::{The version number of the git tag '${{ github.ref_name }}' does not match the one in the code 'v${{ steps.get_new_version.outputs.version }}'.}"
-          exit 1
+          if ["${{ github.ref_name }}" != "v${{ steps.get_new_version.outputs.version }}"]
+          then
+            echo "::error title={Version numbers don't match!}::{The version number of the git tag '${{ github.ref_name }}' does not match the one in the code 'v${{ steps.get_new_version.outputs.version }}'.}"
+            exit 1
+          else
+            echo "::notice title={Version numbers match}::{The version number check was succesful. The version number of the git tag '${{ github.ref_name }}' does match the one in the code 'v${{ steps.get_new_version.outputs.version }}'.}"
+          fi
 
       # Run automated testing
       # extract files from dtx
