@@ -2,6 +2,8 @@ name: Automated testing and building
 
 on:
   push:
+    paths:
+      - rub-kunstgeschichte/*.*
   pull_request:
     branches:
       - main
