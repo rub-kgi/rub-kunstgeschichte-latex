@@ -53,16 +53,19 @@ jobs:
 
       # Tag new version
       - name: Tag the commit
+        id: tag_commit
         run: |
           next_version=${{ steps.get_new_version.outputs.version }}
-          git tag -a "$next_version" -m "Version $next_version. See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details."
+          tag_name=v$next_version
+          git tag -a "$tag_name" -m "Version $next_version."
           git push --follow-tags
+          echo "tag-name=$tag_name" >> "$GITHUB_OUTPUT"
 
       # Create a GitHub release
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.get_new_version.outputs.version }}
+          tag_name: ${{ steps.tag_commit.outputs.tag-name }}
           name: Release ${{ steps.get_new_version.outputs.version }}
           body_path: ./release_notes.md
           files: |
