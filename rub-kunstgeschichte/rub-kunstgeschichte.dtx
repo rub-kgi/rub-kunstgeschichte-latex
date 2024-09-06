@@ -240,6 +240,7 @@
 %
 % \DescribePackage{biblatex}
 % \changes{v0.2.0}{2024-09-06}{Use biblatex with authortitle-dw style from biblatex-dw package.}^^A
+% \changes{unreleased}{unreleased}{Use arthistory-bonn biblatex style instead of authortitle-dw.}^^A
 % To support bibliography facilities out of the box, the \pkg{biblatex} package is loaded. To customize the behavior, a few options are passed to the package.
 % \iffalse
 %% biblatex options
@@ -273,34 +274,42 @@
 }{biblatex}
 %    \end{macrocode}
 %
-% \DescribePackage{biblatex-dw}
+% \DescribePackage{biblatex-arthistory-bonn}
 % \iffalse
-%% biblatex-dw package
+%% biblatex-arthistory-bonn package
 % \fi
-% Further approximation of the suggested bibliography and citation styles in the guidelines is achieved by using the \pkg{biblatex-dw} package.
+% Further approximation of the suggested bibliography and citation styles in the guidelines is achieved by using the \pkg{biblatex-arthistory-bonn} package.
 % To use it, a few more options are passed to \pkg{biblatex}:
 %    \begin{macrocode}
 \PassOptionsToPackage{
 %    \end{macrocode}
 %
 % \DescribeOption[biblatex]{style}
-% The \optn{authortitle-dw} provided by the \pkg{biblatex-dw} package is probably the closest style to the one suggested in the guidelines.
+% The \optn{arthistory-bonn} style provided by the \pkg{biblatex-arthistory-bonn} package is suited to approximate the citation style suggested in the guidelines.
 %    \begin{macrocode}
-    style=authortitle-dw,
+    style=arthistory-bonn,
 %    \end{macrocode}
 %
-% The following options are provided by the \pkg{biblatex-dw} package:
+% The following options of the \optn{arthistory-bonn} biblatex style are set to further implement the guidelines:
 %
-% \DescribeOption[biblatex]{firstfull}
+% \DescribeOption[biblatex]{firstcitefull}
 % Delivers a full citation for the first occurence of an entry.
 %    \begin{macrocode}
-    firstfull=true,
+    firstcitefull=true,
 %    \end{macrocode}
 %
-% \DescribeOption[biblatex]{addyear}
-% Adds the year of the publication after the title.
+% \DescribeOption[biblatex]{enddot}
+% Every bibliography entry will end with a dot.
 %    \begin{macrocode}
-    addyear=true
+    enddot=true,
+%    \end{macrocode}
+%
+% The next \optn{arthistory-bonn} option is not implementing any part of the guidelines but is still useful:
+%
+% \DescribeOption[biblatex]{namelinked}
+% Both name and year in a short citation will link to the respective bibliography entry.
+%    \begin{macrocode}
+    namelinked=true
 }{biblatex}
 %    \end{macrocode}
 %

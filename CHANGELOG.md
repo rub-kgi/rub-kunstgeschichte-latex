@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Use [arthistory-bonn](https://ctan.org/pkg/biblatex-arthistory-bonn) biblatex style instead of [authortitle-dw](https://ctan.org/pkg/biblatex-dw)
 - Move citation footnote marks after punctuation
 
 ## [v0.2.0] - 2024-09-06
