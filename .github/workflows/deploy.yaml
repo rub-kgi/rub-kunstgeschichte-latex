@@ -71,7 +71,7 @@ jobs:
             rub-kunstgeschichte/build/unpacked/rub-kunstgeschichte-example.tex
 
       # Automatic upload to CTAN
-      - name: CTAN Upload
+      - name: CTAN Verification
         uses: addnab/docker-run-action@v3
         with:
           image: registry.gitlab.com/islandoftex/images/texlive:TL2024-2024-05-19-full
@@ -79,4 +79,4 @@ jobs:
           run: |
             cd /workspace
             announcement=$(git tag -l --format="%(contents:subject)" v${{ steps.get_new_version.outputs.version }})
-            l3build upload --email "${{ secrets.CTAN_EMAIL }}" --message "$announcement" "${{ steps.get_new_version.outputs.version }} ${{ steps.get_new_version.outputs.version-date }}"
+            echo "n" | l3build upload --dry-run --email "${{ secrets.CTAN_EMAIL }}" --message "$announcement" "${{ steps.get_new_version.outputs.version }} ${{ steps.get_new_version.outputs.version-date }}"
