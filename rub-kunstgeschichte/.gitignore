@@ -1,4 +1,6 @@
 build
 
+rub-kunstgeschichte-ctan.curlopt
+
 # ignore generated zip files
 *.zip

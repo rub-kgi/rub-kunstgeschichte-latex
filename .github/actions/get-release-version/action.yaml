@@ -11,12 +11,21 @@ outputs:
   version:
     description: 'The release version'
     value: ${{ steps.get_version.outputs.version }}
+  version-date:
+    description: 'The date of the release'
+    value: ${{ steps.get_version_date.outputs.version-date }}
 runs:
   using: "composite"
   steps:
-    - id: get_version
+    - id: get_version_tag
       run: |
         VERSION=$(grep -Pzo '\\ProvidesClass\{${{ inputs.class-name }}\}(.|\n)*?\[\d{4}-\d{2}-\d{2} v\K\d+\.\d+\.\d+' ${{ inputs.file }} | tr '\0' '\n')
         echo "found version: $VERSION"
         echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+      shell: bash
+    - id: get_version_date
+      run: |
+        VERSION_DATE=$(grep -Pzo '\\ProvidesClass\{${{ inputs.class-name }}\}(.|\n)*?\[\K\d{4}-\d{2}-\d{2}' ${{ inputs.file }} | tr '\0' '\n')
+        echo "found version date: $VERSION_DATE"
+        echo "version-date=$VERSION_DATE" >> "$GITHUB_OUTPUT"
       shell: bash
