@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Print bibliographies divided into primary and secondary literature with **\printbibliographies**
+- Translation support using the [translations](https://ctan.org/pkg/translations) package
+
 ### Changed
 
 - Use [arthistory-bonn](https://ctan.org/pkg/biblatex-arthistory-bonn) biblatex style instead of [authortitle-dw](https://ctan.org/pkg/biblatex-dw)
