@@ -148,6 +148,23 @@
 %
 % If neither \optn{parksip} nor \optn{noparskip} are given, the \pkg{parskip} package is automatically loaded by default.
 %
+% \subsection{Macros}\label{sec:usage:macros}
+%
+% \DescribeMacro{\printbibliographies}
+% Prints the bibliography, divided into two subbibliographies.
+% One for primary sources and one for secondary literature, as suggested in section 3.7.1 of the guidelines on page 14.
+% It uses the keyword mechanism to distinguish primary sources i.e. in order for a bib entry to be sorted into the primary sources section, it needs the \texttt{source} keyword.
+% E.g. the bible would be considered a primary source:
+% \begin{sourceverb}
+% @inbook{bible,
+%     author    = {{The Bible}},
+%     title     = {The Holy Bible: King James Version},
+%     |ldots
+%     keywords  = {source}
+% }
+% \end{sourceverb}
+% All other entries which don't have the \texttt{source} keyword will be sorted into the secondary literature section of the bibliography.
+%
 % \StopEventually{}
 %
 % \clearpage
@@ -382,6 +399,33 @@
 %    \begin{macrocode}
 \hypersetup{hidelinks=true}
 %    \end{macrocode}
+%
+% \subsection{Macros}\label{sec:implementation:macros}
+%
+% \begin{macro}{\printbibliographies}
+% \changes{unreleased}{unreleased}{was added}^^A
+% Prints the bibliography using the native \cs{printbibliography} macro, but divides it into sections for primary sources and secondary literature. The keyword \texttt{source} is used to sort entries into the primary sources section.
+%    \begin{macrocode}
+\newcommand{\printbibliographies}{%
+    \addcontentsline{toc}{section}{\refname}%
+    \printbibheading[%
+        heading = bibliography,%
+        title = {\refname}%
+    ]
+    \printbibliography[%
+        keyword = source,%
+        heading = subbibliography,%
+        title = {Primary sources}%
+    ]
+    \printbibliography[%
+        notkeyword = source,%
+        heading = subbibliography,%
+        title = {Secondary literature}%
+    ]
+}
+%    \end{macrocode}
+% \end{macro}
+% 
 % \iffalse
 
 %</class>
@@ -429,8 +473,18 @@
 }
 @book{exampleBook,
     author    = {John Smith},
-    title     = {A long example book},
-    year      = {2024}
+    title     = {A long example book marked as primary literature},
+    year      = {2024},
+    keywords  = {source}
+}
+@inbook{bible,
+    author    = {{The Bible}},
+    title     = {The Holy Bible: King James Version},
+    booktitle = {The New Testament},
+    publisher = {Oxford University Press},
+    year      = {1769},
+    location  = {Oxford},
+    keywords  = {source}
 }
 @online{exampleWebsite,
     author  = {{Example consortium}},
@@ -524,15 +578,10 @@
     \autocite{biblatexCheatsheet}.
 
     At the end of the document we can include a bibliography
-    containing all cited sources with \verb|\printbibliography|.
-%    \end{macrocode}
-% \iffalse
+    containing all cited sources, divided into primary and secondary literature, with \verb|\printbibliographies|. Primary literature (also called a \textit{source}) is something like the bible\autocite{bible}, letters, treatises etc. We put the bibliography on a new page by using \verb|\clearpage| before printing it.
 
-% \fi
-%
-% As suggested in the example document itself, we include the bibliography.
-%    \begin{macrocode}
-    \printbibliography
+    \clearpage
+    \printbibliographies
 %    \end{macrocode}
 %
 % Finally we end the document environment
