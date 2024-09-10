@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Use [arthistory-bonn](https://ctan.org/pkg/biblatex-arthistory-bonn) biblatex style instead of [authortitle-dw](https://ctan.org/pkg/biblatex-dw)
 - Move citation footnote marks after punctuation
+- Fix for hyperref warning "Unexpected value for option 'hidelinks' is ignored"
 
 ## [v0.2.0] - 2024-09-06
 
