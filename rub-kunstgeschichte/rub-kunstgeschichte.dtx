@@ -663,6 +663,14 @@
 }
 %    \end{macrocode}
 % \end{macro}
+% \begin{macro}{\configureTitlepage}
+% Lastly, we create a macro that can be used in the preamble to set the titlepage info keys.
+%    \begin{macrocode}
+\newcommand{\configureTitlepage}[1]{%
+    \SetKeys[rubkgi@titlepage]{#1}%
+}
+%    \end{macrocode}
+% \end{macro}
 %
 % \subsection{Translations}\label{sec:implementation:translations}
 % \changes{unreleased}{unreleased}{Use translations package for multi-lingual support.}^^A
