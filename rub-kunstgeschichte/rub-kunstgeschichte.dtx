@@ -712,11 +712,18 @@
 
 % \fi
 %
-% followed by the information that is needed to typeset a title:
+% followed by the information that is needed to typeset a normal title:
 %    \begin{macrocode}
 \title{Example usage of the \textsf{rub-kunstgeschichte} class}
 \author{Joran Schneyer}
 %    \end{macrocode}
+% For the custom title we need to set additional information, such as
+%    \begin{macrocode}
+\configureTitlepage{
+    email = {joran.schneyer@ruhr-uni-bochum.de}
+}
+%    \end{macrocode}
+% We leave the rest to their default values for now.
 %
 % For citations, the bibtex entries are usually written to a seperate \filenm{.bib} file.
 % For the sake of this example we keep everything in one \filenm{.tex} file and use the \env{filecontents} environment instead.
@@ -823,6 +830,8 @@
     Furthermore the \texttt{hyperref} package
     is automatically loaded to enable clickable
     links and references.
+
+    Notably, the first page is a custom title page that aims to recreate the titlepage template of the guidelines in \LaTeX. Note, how the fields have descriptive default values in CAPS, so that you can easily see which information is still missing for the title page. As the documentation of this class states, you can either pass the corresponding key-value options into an optional argument of \verb|\maketitle|, or use the \verb|\configureTitlepage| macro in the preamble.\footnote{For a full list of titlepage options refer to the \texttt{rub-kunstgeschichte} class documentation.}
 
     We use the \texttt{babel} package to set the language to german (even though this example document is actually written in english) to showcase how headings are automatically translated.
 
