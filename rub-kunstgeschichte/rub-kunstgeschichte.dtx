@@ -62,6 +62,10 @@
 % \DoNotIndex{\LaTeX,\verb}
 % \DoNotIndex{\texorpdfstring}
 % \DoNotIndex{\@rubkgi@bibheading,\@rubkgi@bibheading@primary,\@rubkgi@bibheading@secondary}
+% \DoNotIndex{\@rubkgi@maketitle}
+% \DoNotIndex{\@rubkgi@titlepage@gradebox@width}
+% \DoNotIndex{\@author,\@date,\@title}
+% \DoNotIndex{\@rubkgi@titlepage@author@email,\@rubkgi@titlepage@author@matricnum,\@rubkgi@titlepage@author@semester,\@rubkgi@titlepage@seminar@semester,\@rubkgi@titlepage@seminar@lecturer,\@rubkgi@titlepage@seminar@name,\@rubkgi@titlepage@seminar@degree,\@rubkgi@titlepage@seminar@module,\@rubkgi@titlepage@seminar@creditpoints}
 %
 %^^A define helper commands for consistent typesetting in the documentation
 % \DeclareDocumentCommand\email{m}{\href{mailto:#1}{\nolinkurl{#1}}}
@@ -169,6 +173,31 @@
 % All other entries which don't have the \texttt{source} keyword will be sorted into the secondary literature section of the bibliography.
 %
 % You can customize the behavior of the macro using key-value \meta{options}. The option keys that are currently available are \optn{heading}, \optn{heading-primary} and \optn{heading-secondary} to overwrite the headings of the bibliography and the two subbibliographies respectively.
+%
+% \DescribeMacro{\maketitle} \oarg{titlepage-info}
+%
+% The native command \cs{maketitle} is redefined to create the title page according to the template in the guidelines.
+% The new title page needs more information than the standard one.
+% Besides the name of the author and title it needs more details about the author such as the matriculation number as well as information about the seminar the work is associated with.
+% The extra info can be passed as key-value pairs to the optional \meta{titlepage-info} argument of the redefined \cs{maketitle} macro
+% \DescribeMacro{\configureTitlepage}
+% or to the \cs{configureTitlepage} macro implemented for just this task.
+% The following custom keys are implemented:
+% \begin{description}
+% \ItemDescribeOption[titlepage]{email} The email of the author.
+% \ItemDescribeOption[titlepage]{matricnum} The matriculation number of the author.
+% \ItemDescribeOption[titlepage]{author-semester} The number of semesters the author has studied the subject.
+% \ItemDescribeOption[titlepage]{seminar-semester} The semester in which the seminar takes place in. E.g. \optn{Sommersemester 2024} or \optn{Wintersemester 2023/24}.
+% \ItemDescribeOption[titlepage]{seminar-lecturer} The name of the lecturer of the seminar.
+% \ItemDescribeOption[titlepage]{seminar-name} The name of the seminar itself.
+% \ItemDescribeOption[titlepage]{seminar-degree} The degree in which the author has taken the seminar in.
+% \ItemDescribeOption[titlepage]{seminar-module} The module in which the author has taken the seminar in.
+% \ItemDescribeOption[titlepage]{seminar-cp} The credit points the author will be rewarded with when completing the seminar.
+% \end{description}
+% Additionally you should set the normal \cs{author}, \cs{date} and \cs{title} info in the preamble.
+%
+% Note, that in contrast to e.g. the headers of the bibliography, the title page is not translated into the document language.
+% The guidleines specify that exactly this template should be used and to our understanding this means that it should always be written in german, regardless of the document language.
 %
 % \subsection{Translations}\label{sec:usage:translations}
 %
@@ -426,6 +455,22 @@
 \RequirePackage{translations}
 %    \end{macrocode}
 %
+% \iffalse
+%% Other
+% \fi
+%
+% \DescribePackage{tabularx}
+% To make fancy tables. Is used e.g. in the title page.
+%    \begin{macrocode}
+\RequirePackage{tabularx} % For fancy tables. Is used in title page.
+%    \end{macrocode}
+%
+% \DescribePackage{boxedminipage}
+% Used by title page.
+%    \begin{macrocode}
+\RequirePackage{boxedminipage} % Used in title page.
+%    \end{macrocode}
+%
 % \subsection{Macros}\label{sec:implementation:macros}
 % \iffalse
 %% Macros
@@ -487,6 +532,146 @@
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{\maketitle}
+% \changes{unreleased}{unreleased}{Redefined for custom title page according to template in guidelines.}^^A
+% We redefine the \cs{maketitle} macro to print a custom title page.
+% We also add the ability to customize it using key-value pairs in the optional argument.
+%    \begin{macrocode}
+\renewcommand{\maketitle}[1][]{%
+    \SetKeys[rubkgi@titlepage]{#1}%
+    \@rubkgi@maketitle%
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\@rubkgi@maketitle}
+% The custom title page is defined as a dedicated internal command.
+%    \begin{macrocode}
+\newcommand{\@rubkgi@maketitle}{
+%    \end{macrocode}
+% It uses the \env{titlepage} environment to dedicate a full page to the titel.
+% Inside, it uses groups, minipages and tabularx tables to arrange the fields to resemble the template of the guidelines.
+%    \begin{macrocode}
+    \begin{titlepage}
+        % set page margins for the title page
+        \newgeometry{left=2.5cm,top=2.5cm,bottom=2cm,right=2.5cm}%
+        % define the width of the grade box
+        \def\@rubkgi@titlepage@gradebox@width{5.03cm}%
+        %
+        % create a group for the top part of the title page
+        {\raggedright%
+        % create a minipage for the top left part
+        \begin{minipage}[t]%
+        % calculate the width of the top left part
+        % based on the grade box width
+        {\dimexpr\textwidth%
+        -\@rubkgi@titlepage@gradebox@width%
+        -0.5cm\relax}%
+        \vspace{0pt}% somehow helps aligning at the top
+        \begin{tabularx}{\linewidth}{@{}lX}%
+            \multicolumn{2}{@{}l}{%
+                Ruhr-Universität Bochum%
+            }\\%
+            \multicolumn{2}{@{}l}{%
+                Fakultät für Geschichtswissenschaft%
+            }\\%
+            \multicolumn{2}{@{}l}{%
+                Kunstgeschichtliches Institut%
+            }\\%
+            \multicolumn{2}{@{}l}{%
+                \@rubkgi@titlepage@seminar@semester%
+            }\\%
+            Dozent:in:    & \@rubkgi@titlepage@seminar@lecturer\\%
+            Seminartitel: & \@rubkgi@titlepage@seminar@name\\%
+            Studiengang:  & \@rubkgi@titlepage@seminar@degree\\%
+            Modul:        & \@rubkgi@titlepage@seminar@module\\%
+            Kreditpunkte: & \@rubkgi@titlepage@seminar@creditpoints\\%
+        \end{tabularx}%
+        \end{minipage}%
+        % align grade box on the right side by filling in the gap
+        \hfill%
+        % define the grade box as a boxedminipage
+        \begin{boxedminipage}[t][3.78cm][t]%
+        {\@rubkgi@titlepage@gradebox@width}%
+        % leave a little space and add the text inside
+        \vspace{1em}%
+        \hspace{1em}Note:%
+        \end{boxedminipage}%
+        }% top part ends here
+        %
+        \vfill% vertical space to fill
+        %
+        % create center part (title and author)
+        \begin{center}%
+        % add title relatively LARGE
+        {\LARGE \@title \par}%
+        \vskip 2em% add space between title and author
+        % add author slightly larger than normal text
+        {\large \@author \par}%
+        % end the center environment
+        % and switch back to normal paragraph text style
+        \end{center}\par%
+        %
+        \vfill% fill gap to put next part at bottom
+        %
+        % create bottom part
+        {\raggedright%
+        \begin{tabular}{@{}ll}%
+            Matrikelnr.: & \@rubkgi@titlepage@author@matricnum\\%
+            % Add email as a clickable link
+            Email: & \href{mailto:\@rubkgi@titlepage@author@email}%
+                                 {\@rubkgi@titlepage@author@email}\\%
+            Fachsemester: & \@rubkgi@titlepage@author@semester\\%
+            Abgabetermin: & \@date\\%
+        \end{tabular}
+        }%
+    \end{titlepage}%
+%    \end{macrocode}
+% The guidelines specify that the titlepage counts towards the page numbers but should not display one. Therefore we set the page number counter to two after the title page.
+%    \begin{macrocode}
+    \setcounter{page}{2}%
+%    \end{macrocode}
+% We also reset the geometry to the one defined before the title page and then end the custom titlepage macro.
+%    \begin{macrocode}
+    \restoregeometry%
+}
+%    \end{macrocode}
+% The custom title page needs extra information which we want the user to be able to set via key-value pairs. We first define the key-value pairs and then set the defaults.
+%    \begin{macrocode}
+\DeclareKeys[rubkgi@titlepage]
+{
+    email            .store = \@rubkgi@titlepage@author@email,
+    matricnum        .store = \@rubkgi@titlepage@author@matricnum,
+    author-semester  .store = \@rubkgi@titlepage@author@semester,
+    seminar-semester .store = \@rubkgi@titlepage@seminar@semester,
+    seminar-lecturer .store = \@rubkgi@titlepage@seminar@lecturer,
+    seminar-name     .store = \@rubkgi@titlepage@seminar@name,
+    seminar-degree   .store = \@rubkgi@titlepage@seminar@degree,
+    seminar-module   .store = \@rubkgi@titlepage@seminar@module,
+    seminar-cp       .store = \@rubkgi@titlepage@seminar@creditpoints
+}
+\SetKeys[rubkgi@titlepage]
+{
+    email            = {YOUR-EMAIL},
+    matricnum        = {YOUR MATRICULATION NUMBER},
+    author-semester  = {YOUR NUMBER OF SEMESTERS},
+    seminar-semester = {THE SEMESTER IN WHCIH THE SEMINAR IS HELD},
+    seminar-lecturer = {NAME OF SEMINAR LECTURER},
+    seminar-name     = {NAME OF THE SEMINAR},
+    seminar-degree   = {DEGREE SEMINAR IS TAKEN IN},
+    seminar-module   = {MODULE SEMINAR IS TAKEN IN},
+    seminar-cp       = {SEMINAR CP}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\configureTitlepage}
+% Lastly, we create a macro that can be used in the preamble to set the titlepage info keys.
+%    \begin{macrocode}
+\newcommand{\configureTitlepage}[1]{%
+    \SetKeys[rubkgi@titlepage]{#1}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
 % \subsection{Translations}\label{sec:implementation:translations}
 % \changes{unreleased}{unreleased}{Use translations package for multi-lingual support.}^^A
 %
@@ -527,11 +712,18 @@
 
 % \fi
 %
-% followed by the information that is needed to typeset a title:
+% followed by the information that is needed to typeset a normal title:
 %    \begin{macrocode}
 \title{Example usage of the \textsf{rub-kunstgeschichte} class}
 \author{Joran Schneyer}
 %    \end{macrocode}
+% For the custom title we need to set additional information, such as
+%    \begin{macrocode}
+\configureTitlepage{
+    email = {joran.schneyer@ruhr-uni-bochum.de}
+}
+%    \end{macrocode}
+% We leave the rest to their default values for now.
 %
 % For citations, the bibtex entries are usually written to a seperate \filenm{.bib} file.
 % For the sake of this example we keep everything in one \filenm{.tex} file and use the \env{filecontents} environment instead.
@@ -638,6 +830,8 @@
     Furthermore the \texttt{hyperref} package
     is automatically loaded to enable clickable
     links and references.
+
+    Notably, the first page is a custom title page that aims to recreate the titlepage template of the guidelines in \LaTeX. Note, how the fields have descriptive default values in CAPS, so that you can easily see which information is still missing for the title page. As the documentation of this class states, you can either pass the corresponding key-value options into an optional argument of \verb|\maketitle|, or use the \verb|\configureTitlepage| macro in the preamble.\footnote{For a full list of titlepage options refer to the \texttt{rub-kunstgeschichte} class documentation.}
 
     We use the \texttt{babel} package to set the language to german (even though this example document is actually written in english) to showcase how headings are automatically translated.
 
