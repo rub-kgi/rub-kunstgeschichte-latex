@@ -29,7 +29,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2022-06-01]
 %<class>\ProvidesClass{rub-kunstgeschichte}
 %<*class>
-    [2024-09-06 v0.2.0 RUB Kunstgeschichte class]
+    [2024-10-30 v0.3.0 RUB Kunstgeschichte class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -303,7 +303,7 @@
 %
 % \DescribePackage{biblatex}
 % \changes{v0.2.0}{2024-09-06}{Use biblatex with authortitle-dw style from biblatex-dw package.}^^A
-% \changes{unreleased}{unreleased}{Use arthistory-bonn biblatex style instead of authortitle-dw.}^^A
+% \changes{v0.3.0}{2024-10-30}{Use arthistory-bonn biblatex style instead of authortitle-dw.}^^A
 % To support bibliography facilities out of the box, the \pkg{biblatex} package is loaded. To customize the behavior, a few options are passed to the package.
 % \iffalse
 %% biblatex options
@@ -477,7 +477,7 @@
 % \fi
 %
 % \begin{macro}{\printbibliographies}
-% \changes{unreleased}{unreleased}{was added}^^A
+% \changes{v0.3.0}{2024-10-30}{was added}^^A
 % Prints the bibliography using the native \cs{printbibliography} macro, but divides it into sections for primary sources and secondary literature. The keyword \texttt{source} is used to sort entries into the primary sources section.
 %
 % We start by defining the macro with an optional argument that is passed to \cs{SetKeys} to allow customization using key-value pairs.
@@ -533,7 +533,7 @@
 % \end{macro}
 %
 % \begin{macro}{\maketitle}
-% \changes{unreleased}{unreleased}{Redefined for custom title page according to template in guidelines.}^^A
+% \changes{v0.3.0}{2024-10-30}{Redefined for custom title page according to template in guidelines.}^^A
 % We redefine the \cs{maketitle} macro to print a custom title page.
 % We also add the ability to customize it using key-value pairs in the optional argument.
 %    \begin{macrocode}
@@ -673,7 +673,7 @@
 % \end{macro}
 %
 % \subsection{Translations}\label{sec:implementation:translations}
-% \changes{unreleased}{unreleased}{Use translations package for multi-lingual support.}^^A
+% \changes{v0.3.0}{2024-10-30}{Use translations package for multi-lingual support.}^^A
 %
 % The \pkg{translations} package offers an easy interface to create multilingual strings. We can define them all at once here, at the end of the class, since they are only used when the user commands are expanded in the document.
 %
