@@ -511,13 +511,13 @@
 %    \end{macrocode}
 % For greater flexibility we define the heading strings as internal macros that can be redefined by the user with key-value options and use the \pkg{translations} package for the default strings. See \autoref{sec:implementation:translations} for the implementation of the translations. We don't want heading strings to include paragraphs, this is why we use the starred variant of \cs{newcommand}.
 %    \begin{macrocode}
-\newcommand*{\@rubkgi@bibheading}{
+\newcommand*{\@rubkgi@bibheading}{%
     \GetTranslationWarn{Bibliography}
 }
-\newcommand*{\@rubkgi@bibheading@primary}{
+\newcommand*{\@rubkgi@bibheading@primary}{%
     \GetTranslationWarn{Primary Bibliography}
 }
-\newcommand*{\@rubkgi@bibheading@secondary}{
+\newcommand*{\@rubkgi@bibheading@secondary}{%
     \GetTranslationWarn{Secondary Bibliography}
 }
 %    \end{macrocode}
