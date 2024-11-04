@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Redefinition of **\appendix** macro to automatically disable section numbering in the appendix
+
 ### Changed
 
 - Fix for unwanted space before bibliography headings
