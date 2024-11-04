@@ -673,6 +673,33 @@
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{\appendix}
+% \changes{unreleased}{unreleased}{redefined to disable section numbering}
+% To automatically disable section numbering in appendix sections,
+% we redefine \cs{appendix} to include setting the section numbering depth to zero.
+% \iffalse
+%% Extend \appendix to disable section numbering
+% \fi
+% First, we save the old appendix definition in a different macro.
+%    \begin{macrocode}
+\let\oldappendix\appendix%
+%    \end{macrocode}
+% Then we redefine the \cs{appendix} command
+%    \begin{macrocode}
+\renewcommand{\appendix}{%
+%    \end{macrocode}
+% starting with the old appendix macro
+%    \begin{macrocode}
+    \oldappendix%
+%    \end{macrocode}
+% and extending it with setting the section numbering depth to zero,
+% which will result in disabled section numbers.
+%    \begin{macrocode}
+    \setcounter{secnumdepth}{0}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
 % \subsection{Translations}\label{sec:implementation:translations}
 % \changes{v0.3.0}{2024-10-30}{Use translations package for multi-lingual support.}^^A
 %
@@ -860,6 +887,16 @@
     \autocite{biblatexDocs}
     or the biblatex cheatsheet
     \autocite{biblatexCheatsheet}.
+
+    \clearpage
+    \appendix
+
+    \section{An appendix section}
+
+    We finished the main content of the example document
+    so we call \verb|\appendix| before this first appendix section.
+    It will automatically disable section numbering
+    for any appendix sections.
 
     At the end of the document we can include a bibliography
     containing all cited sources, divided into primary and secondary literature, with \verb|\printbibliographies|. Primary literature (also called a \textit{source}) is something like the bible\autocite{bible}, letters, treatises etc. We put the bibliography on a new page by using \verb|\clearpage| before printing it. Note, that since we used \verb|\usepackage[ngerman]{babel}| in the preamble, the headings of the bibliography are typed in german.
