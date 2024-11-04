@@ -199,6 +199,18 @@
 % Note, that in contrast to e.g. the headers of the bibliography, the title page is not translated into the document language.
 % The guidleines specify that exactly this template should be used and to our understanding this means that it should always be written in german, regardless of the document language.
 %
+% \DescribeMacro{\appendix}
+%
+% To indicate the end of the main content and start of the appendix, the \cs{appendix} command is used in \LaTeX. Here, the command was redefined to automatically disable section numbering for the appendix as suggested in the guidelines. This means you can just use normal section commands such as
+% \begin{sourceverb}
+% \section{Figures}
+% \end{sourceverb}
+% after calling
+% \begin{sourceverb}
+% \appendix
+% \end{sourceverb}
+% and it will not have a section number.
+%
 % \subsection{Translations}\label{sec:usage:translations}
 %
 % The class uses the \pkg{translations} package to allow multi-lingual strings. The default language is english. To tell it which language it should use, you can load a package like \pkg{babel} with the corresponding language as the package option in the preamble. E.g. for german using the new spelling rules
