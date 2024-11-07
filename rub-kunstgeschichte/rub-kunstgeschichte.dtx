@@ -950,12 +950,16 @@
     \verb|\usepackage[ngerman]{babel}| in the preamble,
     the headings of the bibliography are typed in german.
 
+    \clearpage
+    \printbibliographies
+
+    \clearpage
     \section{Figures}
 
     The guidelines suggest putting all figures
     in a dedicated appendix section
-    instead of in between the
-    main content text.\autocite[25]{guidelines}
+    after the bibliography instead of in between the
+    main content text.\autocite[10,25]{guidelines}
 
     We can include figures with \verb|\includegraphics|
     inside a \texttt{figure} environment.
@@ -972,9 +976,6 @@
         Inventory number.}
         \label{fig:exampleArtwork}
     \end{figure}
-
-    \clearpage
-    \printbibliographies
 %    \end{macrocode}
 %
 % Finally we end the document environment
