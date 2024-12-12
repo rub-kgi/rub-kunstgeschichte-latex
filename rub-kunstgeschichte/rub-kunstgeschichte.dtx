@@ -199,8 +199,10 @@
 % Note, that in contrast to e.g. the headers of the bibliography, the title page is not translated into the document language.
 % The guidleines specify that exactly this template should be used and to our understanding this means that it should always be written in german, regardless of the document language.
 %
-% \DescribeMacro{\appendix}
+% \DescribeMacro{\subtitle}
+% In addition to the standard \cs{title} command, this class provides a \cs{subtitle} command. Note, that the subtitle has no key in \cs{configureTitlepage} but can only be set with the \cs{subtitle} command.
 %
+% \DescribeMacro{\appendix}
 % To indicate the end of the main content and start of the appendix, the \cs{appendix} command is used in \LaTeX. Here, the command was redefined to automatically disable section numbering for the appendix as suggested in the guidelines. This means you can just use normal section commands such as
 % \begin{sourceverb}
 % \section{Figures}
@@ -556,6 +558,7 @@
 }
 %    \end{macrocode}
 % \end{macro}
+%
 % \begin{macro}{\@rubkgi@maketitle}
 % The custom title page is defined as a dedicated internal command.
 %    \begin{macrocode}
@@ -617,7 +620,8 @@
         \begin{center}%
         % add title relatively LARGE
         {\LARGE \@title \par}%
-        \vskip 2em% add space between title and author
+        {\Large \@subtitle \par}%
+        \vskip 2em% add space between (sub-)title and author
         % add author slightly larger than normal text
         {\large \@author \par}%
         % end the center environment
@@ -676,12 +680,28 @@
 }
 %    \end{macrocode}
 % \end{macro}
+%
 % \begin{macro}{\configureTitlepage}
-% Lastly, we create a macro that can be used in the preamble to set the titlepage info keys.
+% Furthermore, we create a macro that can be used in the preamble to set the titlepage info keys.
 %    \begin{macrocode}
 \newcommand{\configureTitlepage}[1]{%
     \SetKeys[rubkgi@titlepage]{#1}%
 }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\subtitle}
+% \changes{unreleased}{unreleased}{Added}^^A
+% The titlepage also has the option for a subtitle.
+% For consistency with other packages and classes we provide a dedicated \cs{subtitle} command instead of a key in \cs{configureTitlepage}.
+%    \begin{macrocode}
+\newcommand{\subtitle}[1]{%
+    \gdef\@subtitle{#1}%
+}
+%    \end{macrocode}
+% We also initialize the subtitle as empty
+%    \begin{macrocode}
+\gdef\@subtitle{}%
 %    \end{macrocode}
 % \end{macro}
 %
