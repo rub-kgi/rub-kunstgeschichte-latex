@@ -66,6 +66,7 @@
 % \DoNotIndex{\@rubkgi@titlepage@gradebox@width}
 % \DoNotIndex{\@author,\@date,\@title}
 % \DoNotIndex{\@rubkgi@titlepage@author@email,\@rubkgi@titlepage@author@matricnum,\@rubkgi@titlepage@author@semester,\@rubkgi@titlepage@seminar@semester,\@rubkgi@titlepage@seminar@lecturer,\@rubkgi@titlepage@seminar@name,\@rubkgi@titlepage@seminar@degree,\@rubkgi@titlepage@seminar@module,\@rubkgi@titlepage@seminar@creditpoints}
+% \DoNotIndex{\@rubkgi@printfiguresources@heading}
 %
 %^^A define helper commands for consistent typesetting in the documentation
 % \DeclareDocumentCommand\email{m}{\href{mailto:#1}{\nolinkurl{#1}}}
@@ -212,6 +213,16 @@
 % \appendix
 % \end{sourceverb}
 % and it will not have a section number.
+%
+% \DescribeMacro{\figuresource} \marg{figure source text}
+%
+% You can add the source of a figure inside a \env{figure} environment with the \cs{figuresource} command,\footnote{Hint: You can use \cs{fullcite} inside of \cs{figuresource} to print a full citation e.g. of a literature where the figure is from to further ease the process of stating figure sources.}
+%
+% \DescribeMacro{\printfiguresources} \oarg{options}
+%
+% so that you can later use \cs{printfiguresources} to automatically list all figure sources in the order of figure numbers.
+% \DescribeKey{heading}
+% Currently, \meta{options} only consist of the \texttt{heading} key to overwrite the heading of the figure sources section.\footnote{If you only want to add a heading for a different language, see \autoref{sec:usage:translations}.}
 %
 % \subsection{Translations}\label{sec:usage:translations}
 %
@@ -445,6 +456,20 @@
 %    \end{macrocode}
 %
 % \subsubsection{Other useful packages}\label{sec:implementation:package-loading:others}
+%
+% \DescribePackage{etoolbox}
+% \changes{unreleased}{unreleased}{Use \pkg{etoolbox} for dynamic definition of internal macros.}^^A
+% Used for several programming tasks. E.g. it allows dynamic internal macro names which is used for the automatic figure source printing system.
+%    \begin{macrocode}
+\RequirePackage{etoolbox}
+%    \end{macrocode}
+%
+% \DescribePackage{forloop}
+% \changes{unreleased}{unreleased}{Use \pkg{forloop} package for simple loops.}^^A
+% Another package for better, easier and more robust programming which simply provides a command for doing loops.
+%    \begin{macrocode}
+\RequirePackage{forloop}
+%    \end{macrocode}
 %
 % \DescribePackage{hyperref}
 % \changes{v0.2.0}{2024-09-06}{Use hyperref for clickable links and references.}^^A
@@ -706,7 +731,7 @@
 % \end{macro}
 %
 % \begin{macro}{\appendix}
-% \changes{v0.4.0}{2024-12-11}{redefined to disable section numbering}
+% \changes{v0.4.0}{2024-12-11}{redefined to disable section numbering}^^A
 % To automatically disable section numbering in appendix sections,
 % we redefine \cs{appendix} to include setting the section numbering depth to zero.
 % \iffalse
@@ -732,8 +757,52 @@
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{\figuresource}
+% \changes{unreleased}{unreleased}{Added}^^A
+% This is used to save a figure source string (potentially including a \cs{cite} command) for later use with \cs{printfiguresources}.
+% We use the \cs{csgdef} command of the \pkg{etoolbox} package to define a dynamically named macro for each figure to store the figure source string.
+%    \begin{macrocode}
+\newcommand{\figuresource}[1]{%
+    \csgdef{figsource@\thefigure}{#1}%
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\printfiguresources}
+% \changes{unreleased}{unreleased}{Added}^^A
+% With the saved figure sources from \cs{figuresource}, we can print a list of them using the \cs{forloop} command of the \pkg{forloop} package.
+% We also provide an optional argument to overwrite the heading of the figure sources section that we create in this command.
+%    \begin{macrocode}
+\newcommand{\printfiguresources}[1][]{%
+    \SetKeys[rubkgi@printfiguresources]{#1}%
+    \section{\@rubkgi@printfiguresources@heading}%
+    \newcounter{@figindex}%
+    \forloop{@figindex}{1}%
+        {\value{@figindex} < \numexpr\value{figure}+1\relax}{%
+        \ifcsdef{figsource@\the@figindex}{%
+            \noindent \figurename~\the@figindex: %
+            \csname figsource@\the@figindex\endcsname\par%
+        }{}%
+    }%
+}
+%    \end{macrocode}
+% In order for this to work we will use the translation package for the heading by default
+%    \begin{macrocode}
+\newcommand*{\@rubkgi@printfiguresources@heading}{%
+    \GetTranslationWarn{Figure Sources}%
+}
+%    \end{macrocode}
+% and declare a key for the options of \cs{printfiguresources} to overwrite the heading:
+%    \begin{macrocode}
+\DeclareKeys[rubkgi@printfiguresources]
+{
+    heading .store = \@rubkgi@printfiguresources@heading
+}
+%    \end{macrocode}
+% \end{macro}
+%
 % \subsection{Translations}\label{sec:implementation:translations}
 % \changes{v0.3.0}{2024-10-30}{Use translations package for multi-lingual support.}^^A
+% \changes{unreleased}{unreleased}{Add strings for figure sources section heading.}^^A
 %
 % The \pkg{translations} package offers an easy interface to create multilingual strings. We can define them all at once here, at the end of the class, since they are only used when the user commands are expanded in the document.
 %
@@ -745,6 +814,14 @@
 \DeclareTranslation{german}{Primary Bibliography}{Primärliteratur}
 \DeclareTranslation{english}{Secondary Bibliography}{Secondary literature}
 \DeclareTranslation{german}{Secondary Bibliography}{Sekundärliteratur}
+%    \end{macrocode}
+%
+% \subsubsection*{Figures}
+%
+% We provide figure sources section headings for english and german:
+%    \begin{macrocode}
+\DeclareTranslation{english}{Figure Sources}{Figure Credits}
+\DeclareTranslation{german}{Figure Sources}{Abbildungsnachweise}
 %    \end{macrocode}
 % 
 % \iffalse
@@ -862,6 +939,10 @@
 %
 %    \begin{macrocode}
 \usepackage[ngerman]{babel} % Sets the language of the document
+%    \end{macrocode}
+% We also need to set the language for \pkg{hyperref}, since it is loaded in the class before we load babel.
+%    \begin{macrocode}
+\hypersetup{ngerman=true} % Tells hyperref to use the same language
 %    \end{macrocode}
 % For including the graphics and placing them where we want them, we load the \pkg{graphicx} and \pkg{float} packages.
 %    \begin{macrocode}
@@ -986,7 +1067,14 @@
     We also add a caption with the meta information
     of the shown artwork,\autocite[25--26]{guidelines}
     as well as a short caption in square brackets
-    and a label for back-referencing.
+    and a label for back-referencing,
+    so that we can use \verb|\ref|
+    or the equivalent command \verb|\autoref|
+    from the hyperref package.
+    E.g. we can reference the example figure
+    as \autoref{fig:exampleArtwork}.
+    Additionally, we set the source of the figure
+    using the custom \verb|\figuresource| command.
 
     \begin{figure}[H]
         \centering
@@ -995,7 +1083,12 @@
         The year, Material, Measurements, Where is it kept?,
         Inventory number.}
         \label{fig:exampleArtwork}
+        \figuresource{\textcopyright{} \texttt{graphicx} package.}
     \end{figure}
+
+    We can then include a list of figure sources
+    at the end of the document:
+    \printfiguresources%
 %    \end{macrocode}
 %
 % Finally we end the document environment
