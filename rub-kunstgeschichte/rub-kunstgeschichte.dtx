@@ -29,7 +29,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2022-06-01]
 %<class>\ProvidesClass{rub-kunstgeschichte}
 %<*class>
-    [2024-12-11 v0.4.0 RUB Kunstgeschichte class]
+    [2025-02-04 v0.5.0 RUB Kunstgeschichte class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -458,14 +458,14 @@
 % \subsubsection{Other useful packages}\label{sec:implementation:package-loading:others}
 %
 % \DescribePackage{etoolbox}
-% \changes{unreleased}{unreleased}{Use \pkg{etoolbox} for dynamic definition of internal macros.}^^A
+% \changes{v0.5.0}{2025-02-04}{Use \pkg{etoolbox} for dynamic definition of internal macros.}^^A
 % Used for several programming tasks. E.g. it allows dynamic internal macro names which is used for the automatic figure source printing system.
 %    \begin{macrocode}
 \RequirePackage{etoolbox}
 %    \end{macrocode}
 %
 % \DescribePackage{forloop}
-% \changes{unreleased}{unreleased}{Use \pkg{forloop} package for simple loops.}^^A
+% \changes{v0.5.0}{2025-02-04}{Use \pkg{forloop} package for simple loops.}^^A
 % Another package for better, easier and more robust programming which simply provides a command for doing loops.
 %    \begin{macrocode}
 \RequirePackage{forloop}
@@ -716,7 +716,7 @@
 % \end{macro}
 %
 % \begin{macro}{\subtitle}
-% \changes{unreleased}{unreleased}{Added}^^A
+% \changes{v0.5.0}{2025-02-04}{Added}^^A
 % The titlepage also has the option for a subtitle.
 % For consistency with other packages and classes we provide a dedicated \cs{subtitle} command instead of a key in \cs{configureTitlepage}.
 %    \begin{macrocode}
@@ -758,7 +758,7 @@
 % \end{macro}
 %
 % \begin{macro}{\figuresource}
-% \changes{unreleased}{unreleased}{Added}^^A
+% \changes{v0.5.0}{2025-02-04}{Added}^^A
 % This is used to save a figure source string (potentially including a \cs{cite} command) for later use with \cs{printfiguresources}.
 % We use the \cs{csgdef} command of the \pkg{etoolbox} package to define a dynamically named macro for each figure to store the figure source string.
 %    \begin{macrocode}
@@ -768,7 +768,7 @@
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\printfiguresources}
-% \changes{unreleased}{unreleased}{Added}^^A
+% \changes{v0.5.0}{2025-02-04}{Added}^^A
 % With the saved figure sources from \cs{figuresource}, we can print a list of them using the \cs{forloop} command of the \pkg{forloop} package.
 % We also provide an optional argument to overwrite the heading of the figure sources section that we create in this command.
 %    \begin{macrocode}
@@ -802,7 +802,7 @@
 %
 % \subsection{Translations}\label{sec:implementation:translations}
 % \changes{v0.3.0}{2024-10-30}{Use translations package for multi-lingual support.}^^A
-% \changes{unreleased}{unreleased}{Add strings for figure sources section heading.}^^A
+% \changes{v0.5.0}{2025-02-04}{Add strings for figure sources section heading.}^^A
 %
 % The \pkg{translations} package offers an easy interface to create multilingual strings. We can define them all at once here, at the end of the class, since they are only used when the user commands are expanded in the document.
 %
