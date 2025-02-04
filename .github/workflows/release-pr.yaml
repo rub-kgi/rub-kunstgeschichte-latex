@@ -56,9 +56,12 @@ jobs:
           if [ $VERSION_BUMP = "major" ]
           then
             NEW_VERSION_MAJOR=$(($NEW_VERSION_MAJOR + 1))
+            NEW_VERSION_MINOR=0
+            NEW_VERSION_PATCH=0
           elif [ $VERSION_BUMP = "minor" ]
           then
             NEW_VERSION_MINOR=$(($NEW_VERSION_MINOR + 1))
+            NEW_VERSION_PATCH=0
           else
             NEW_VERSION_PATCH=$(($NEW_VERSION_PATCH + 1))
           fi
