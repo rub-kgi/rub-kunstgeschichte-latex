@@ -68,7 +68,7 @@ jobs:
             rub-kunstgeschichte/build/unpacked/rub-kunstgeschichte.cls
             rub-kunstgeschichte/build/distrib/**/*.zip
             rub-kunstgeschichte/build/doc/*.pdf
-            rub-kunstgeschichte/build/unpacked/rub-kunstgeschichte-example.tex
+            rub-kunstgeschichte/build/doc/*example.tex
 
       # Automatic upload to CTAN
       - name: CTAN Announcement

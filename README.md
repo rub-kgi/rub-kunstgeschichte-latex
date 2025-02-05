@@ -12,9 +12,9 @@ Just type
 ```
 to use the class in your LaTeX document.
 
-The full documentation of the latest version can be found on CTAN and of any version on the [GitHub release](https://github.com/rub-kgi/rub-kunstgeschichte-latex/releases) page in the release assets as `rub-kunstgeschichte.pdf`.
+The full documentation of the latest version can be found on CTAN and of any version on the [GitHub release](https://github.com/rub-kgi/rub-kunstgeschichte-latex/releases) page in the release assets as [rub-kunstgeschichte.pdf](https://github.com/rub-kgi/rub-kunstgeschichte-latex/releases/latest/download/rub-kunstgeschichte.pdf).
 
-A simple example can be found as `rub-kunstgeschichte-example.tex` in the release assets together with a corresponding compiled pdf version to showcase a typical use case of this class.
+You can also find a simple example called [rub-kunstgeschichte-example.tex](https://github.com/rub-kgi/rub-kunstgeschichte-latex/releases/latest/download/rub-kunstgeschichte-example.tex) which you can use as a template for your own project alongside a compiled pdf version [rub-kunstgeschichte-example.pdf](https://github.com/rub-kgi/rub-kunstgeschichte-latex/releases/latest/download/rub-kunstgeschichte-example.pdf) as part of the release assets.
 
 ### Installation
 

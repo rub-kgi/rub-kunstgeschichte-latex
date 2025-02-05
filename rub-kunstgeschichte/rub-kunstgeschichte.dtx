@@ -16,9 +16,9 @@
 % The Current Maintainer of this work is Joran Schneyer <joran.schneyer@ruhr-uni-bochum.de>.
 %
 % This work consists of the files rub-kunstgeschichte.dtx
-%                                 rub-kunstgeschichte.ins
-%           and the derived files rub-kunstgeschichte.cls
 %                                 rub-kunstgeschichte-example.tex
+%                                 rub-kunstgeschichte.ins
+%           and the derived file  rub-kunstgeschichte.cls
 %
 % \fi
 
@@ -29,7 +29,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[2022-06-01]
 %<class>\ProvidesClass{rub-kunstgeschichte}
 %<*class>
-    [2024-12-11 v0.4.0 RUB Kunstgeschichte class]
+    [2025-02-04 v0.5.0 RUB Kunstgeschichte class]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -66,6 +66,7 @@
 % \DoNotIndex{\@rubkgi@titlepage@gradebox@width}
 % \DoNotIndex{\@author,\@date,\@title}
 % \DoNotIndex{\@rubkgi@titlepage@author@email,\@rubkgi@titlepage@author@matricnum,\@rubkgi@titlepage@author@semester,\@rubkgi@titlepage@seminar@semester,\@rubkgi@titlepage@seminar@lecturer,\@rubkgi@titlepage@seminar@name,\@rubkgi@titlepage@seminar@degree,\@rubkgi@titlepage@seminar@module,\@rubkgi@titlepage@seminar@creditpoints}
+% \DoNotIndex{\@rubkgi@printfiguresources@heading}
 %
 %^^A define helper commands for consistent typesetting in the documentation
 % \DeclareDocumentCommand\email{m}{\href{mailto:#1}{\nolinkurl{#1}}}
@@ -94,7 +95,7 @@
 % \section{Usage}\label{sec:usage}
 %
 % To use this class, simply specify it as the document class.^^A
-% \footnote{You can also find a complete example usage of this class in \autoref{sec:example}.}
+% \footnote{You can also find a complete example usage of this class that you can use as a template in the file \texttt{rub-kunstgeschichte-example.tex}. You can find this file alongside a compiled pdf version as part of the releases on GitHub \url{https://github.com/rub-kgi/rub-kunstgeschichte-latex/releases}.}
 % \begin{sourceverb}
 % \documentclass{rub-kunstgeschichte}
 % \end{sourceverb}
@@ -199,8 +200,10 @@
 % Note, that in contrast to e.g. the headers of the bibliography, the title page is not translated into the document language.
 % The guidleines specify that exactly this template should be used and to our understanding this means that it should always be written in german, regardless of the document language.
 %
-% \DescribeMacro{\appendix}
+% \DescribeMacro{\subtitle}
+% In addition to the standard \cs{title} command, this class provides a \cs{subtitle} command. Note, that the subtitle has no key in \cs{configureTitlepage} but can only be set with the \cs{subtitle} command.
 %
+% \DescribeMacro{\appendix}
 % To indicate the end of the main content and start of the appendix, the \cs{appendix} command is used in \LaTeX. Here, the command was redefined to automatically disable section numbering for the appendix as suggested in the guidelines. This means you can just use normal section commands such as
 % \begin{sourceverb}
 % \section{Figures}
@@ -210,6 +213,16 @@
 % \appendix
 % \end{sourceverb}
 % and it will not have a section number.
+%
+% \DescribeMacro{\figuresource} \marg{figure source text}
+%
+% You can add the source of a figure inside a \env{figure} environment with the \cs{figuresource} command,\footnote{Hint: You can use \cs{fullcite} inside of \cs{figuresource} to print a full citation e.g. of a literature where the figure is from to further ease the process of stating figure sources.}
+%
+% \DescribeMacro{\printfiguresources} \oarg{options}
+%
+% so that you can later use \cs{printfiguresources} to automatically list all figure sources in the order of figure numbers.
+% \DescribeKey{heading}
+% Currently, \meta{options} only consist of the \texttt{heading} key to overwrite the heading of the figure sources section.\footnote{If you only want to add a heading for a different language, see \autoref{sec:usage:translations}.}
 %
 % \subsection{Translations}\label{sec:usage:translations}
 %
@@ -444,6 +457,20 @@
 %
 % \subsubsection{Other useful packages}\label{sec:implementation:package-loading:others}
 %
+% \DescribePackage{etoolbox}
+% \changes{v0.5.0}{2025-02-04}{Use \pkg{etoolbox} for dynamic definition of internal macros.}^^A
+% Used for several programming tasks. E.g. it allows dynamic internal macro names which is used for the automatic figure source printing system.
+%    \begin{macrocode}
+\RequirePackage{etoolbox}
+%    \end{macrocode}
+%
+% \DescribePackage{forloop}
+% \changes{v0.5.0}{2025-02-04}{Use \pkg{forloop} package for simple loops.}^^A
+% Another package for better, easier and more robust programming which simply provides a command for doing loops.
+%    \begin{macrocode}
+\RequirePackage{forloop}
+%    \end{macrocode}
+%
 % \DescribePackage{hyperref}
 % \changes{v0.2.0}{2024-09-06}{Use hyperref for clickable links and references.}^^A
 % Makes links and references clickable.
@@ -556,6 +583,7 @@
 }
 %    \end{macrocode}
 % \end{macro}
+%
 % \begin{macro}{\@rubkgi@maketitle}
 % The custom title page is defined as a dedicated internal command.
 %    \begin{macrocode}
@@ -617,7 +645,8 @@
         \begin{center}%
         % add title relatively LARGE
         {\LARGE \@title \par}%
-        \vskip 2em% add space between title and author
+        {\Large \@subtitle \par}%
+        \vskip 2em% add space between (sub-)title and author
         % add author slightly larger than normal text
         {\large \@author \par}%
         % end the center environment
@@ -676,8 +705,9 @@
 }
 %    \end{macrocode}
 % \end{macro}
+%
 % \begin{macro}{\configureTitlepage}
-% Lastly, we create a macro that can be used in the preamble to set the titlepage info keys.
+% Furthermore, we create a macro that can be used in the preamble to set the titlepage info keys.
 %    \begin{macrocode}
 \newcommand{\configureTitlepage}[1]{%
     \SetKeys[rubkgi@titlepage]{#1}%
@@ -685,8 +715,23 @@
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{\subtitle}
+% \changes{v0.5.0}{2025-02-04}{Added}^^A
+% The titlepage also has the option for a subtitle.
+% For consistency with other packages and classes we provide a dedicated \cs{subtitle} command instead of a key in \cs{configureTitlepage}.
+%    \begin{macrocode}
+\newcommand{\subtitle}[1]{%
+    \gdef\@subtitle{#1}%
+}
+%    \end{macrocode}
+% We also initialize the subtitle as empty
+%    \begin{macrocode}
+\gdef\@subtitle{}%
+%    \end{macrocode}
+% \end{macro}
+%
 % \begin{macro}{\appendix}
-% \changes{v0.4.0}{2024-12-11}{redefined to disable section numbering}
+% \changes{v0.4.0}{2024-12-11}{redefined to disable section numbering}^^A
 % To automatically disable section numbering in appendix sections,
 % we redefine \cs{appendix} to include setting the section numbering depth to zero.
 % \iffalse
@@ -712,8 +757,52 @@
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{\figuresource}
+% \changes{v0.5.0}{2025-02-04}{Added}^^A
+% This is used to save a figure source string (potentially including a \cs{cite} command) for later use with \cs{printfiguresources}.
+% We use the \cs{csgdef} command of the \pkg{etoolbox} package to define a dynamically named macro for each figure to store the figure source string.
+%    \begin{macrocode}
+\newcommand{\figuresource}[1]{%
+    \csgdef{figsource@\thefigure}{#1}%
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\printfiguresources}
+% \changes{v0.5.0}{2025-02-04}{Added}^^A
+% With the saved figure sources from \cs{figuresource}, we can print a list of them using the \cs{forloop} command of the \pkg{forloop} package.
+% We also provide an optional argument to overwrite the heading of the figure sources section that we create in this command.
+%    \begin{macrocode}
+\newcommand{\printfiguresources}[1][]{%
+    \SetKeys[rubkgi@printfiguresources]{#1}%
+    \section{\@rubkgi@printfiguresources@heading}%
+    \newcounter{@figindex}%
+    \forloop{@figindex}{1}%
+        {\value{@figindex} < \numexpr\value{figure}+1\relax}{%
+        \ifcsdef{figsource@\the@figindex}{%
+            \noindent \figurename~\the@figindex: %
+            \csname figsource@\the@figindex\endcsname\par%
+        }{}%
+    }%
+}
+%    \end{macrocode}
+% In order for this to work we will use the translation package for the heading by default
+%    \begin{macrocode}
+\newcommand*{\@rubkgi@printfiguresources@heading}{%
+    \GetTranslationWarn{Figure Sources}%
+}
+%    \end{macrocode}
+% and declare a key for the options of \cs{printfiguresources} to overwrite the heading:
+%    \begin{macrocode}
+\DeclareKeys[rubkgi@printfiguresources]
+{
+    heading .store = \@rubkgi@printfiguresources@heading
+}
+%    \end{macrocode}
+% \end{macro}
+%
 % \subsection{Translations}\label{sec:implementation:translations}
 % \changes{v0.3.0}{2024-10-30}{Use translations package for multi-lingual support.}^^A
+% \changes{v0.5.0}{2025-02-04}{Add strings for figure sources section heading.}^^A
 %
 % The \pkg{translations} package offers an easy interface to create multilingual strings. We can define them all at once here, at the end of the class, since they are only used when the user commands are expanded in the document.
 %
@@ -726,266 +815,18 @@
 \DeclareTranslation{english}{Secondary Bibliography}{Secondary literature}
 \DeclareTranslation{german}{Secondary Bibliography}{Sekundärliteratur}
 %    \end{macrocode}
+%
+% \subsubsection*{Figures}
+%
+% We provide figure sources section headings for english and german:
+%    \begin{macrocode}
+\DeclareTranslation{english}{Figure Sources}{Figure Credits}
+\DeclareTranslation{german}{Figure Sources}{Abbildungsnachweise}
+%    \end{macrocode}
 % 
 % \iffalse
 
 %</class>
-%<*example>
-% \fi
-% \clearpage
-%
-% \section{Example}\label{sec:example}
-%
-% To further exemplify the use of this class,
-% we create an example \filenm{.tex} file.
-% The full \filenm{rub-kunstgeschichte-example.tex} and the corresponding \PDF{} are available on GitHub.^^A
-% \footnote{\url{https://github.com/rub-kgi/rub-kunstgeschichte-latex/releases}}
-%
-% First, the \pkg{rub-kunstgeschichte} class is loaded
-% \iffalse
-%% Load the rub-kunstgeschichte class
-% \fi
-%    \begin{macrocode}
-\documentclass{rub-kunstgeschichte}
-%    \end{macrocode}
-% \iffalse
-
-% \fi
-%
-% followed by the information that is needed to typeset a normal title:
-%    \begin{macrocode}
-\title{Example usage of the \textsf{rub-kunstgeschichte} class}
-\author{Joran Schneyer}
-%    \end{macrocode}
-% For the custom title we need to set additional information, such as
-%    \begin{macrocode}
-\configureTitlepage{
-    email = {joran.schneyer@ruhr-uni-bochum.de}
-}
-%    \end{macrocode}
-% We leave the rest to their default values for now.
-%
-% For citations, the bibtex entries are usually written to a seperate \filenm{.bib} file.
-% For the sake of this example we keep everything in one \filenm{.tex} file and use the \env{filecontents} environment instead.
-% \iffalse
-
-%% bibliography file (usually you would put this in a seperate .bib file)
-% \fi
-%    \begin{macrocode}
-\begin{filecontents}{rub-kunstgeschichte-example.bib}
-@manual{guidelines,
-    author = {{Kunstgeschichtliches Institut}},
-    year   = {2023},
-    title  = {Anleitung zur Erstellung von Hausarbeiten im Fach Kunstgeschichte},
-    organization = {Ruhr University Bochum},
-    url     = {https://kgi.ruhr-uni-bochum.de/wp-content/uploads/2023/04/Anleitung-zum-Erstellen-von-Hausarbeiten-im-Fach-Kunstgeschichte_Fassung-Juli-2023.pdf},
-    urldate = {2024-11-04}
-}
-@article{exampleArticle,
-    author  = {Maxi Mustermann},
-    title   = {A very interesting article},
-    year    = {2001},
-    journal = {Important example journal}
-}
-@book{exampleBook,
-    author    = {John Smith},
-    title     = {A long example book marked as primary literature},
-    year      = {2024},
-    keywords  = {source}
-}
-@inbook{bible,
-    author    = {{The Bible}},
-    title     = {The Holy Bible: King James Version},
-    booktitle = {The New Testament},
-    publisher = {Oxford University Press},
-    year      = {1769},
-    location  = {Oxford},
-    keywords  = {source}
-}
-@online{exampleWebsite,
-    author  = {{Example consortium}},
-    title   = {The truth about example documents},
-    year    = {2020},
-    note    = {Internet forum article},
-    url     = {https://example.com},
-    urldate = {2100-04-01}
-}
-@manual{biblatexDocs,
-    author   = {Philip Kime and Moritz Wemheuer and Philipp Lehman},
-    title    = {The biblatex Package},
-    subtitle = {Programmable Bibliographies and Citations},
-    year     = {2024},
-    url      = {https://ctan.org/pkg/biblatex},
-    urldate  = {2024-06-25}
-}
-@online{biblatexCheatsheet,
-    title   = {Biblatex Cheat Sheet},
-    author  = {Clea F. Rees},
-    year    = {2017},
-    url     = {https://ctan.org/pkg/biblatex-cheatsheet},
-    urldate = {2024-06-25}
-}
-\end{filecontents}
-%    \end{macrocode}
-% \iffalse
-
-% \fi
-% After that, we need to load the bibliography to use it with biblatex.
-%    \begin{macrocode}
-\addbibresource{rub-kunstgeschichte-example.bib}
-%    \end{macrocode}
-% \iffalse
-
-%% Load additional packages
-% \fi
-% To set our language to german (using the new spelling rules) we load \pkg{babel}.
-%
-%    \begin{macrocode}
-\usepackage[ngerman]{babel} % Sets the language of the document
-%    \end{macrocode}
-% For including the graphics and placing them where we want them, we load the \pkg{graphicx} and \pkg{float} packages.
-%    \begin{macrocode}
-\usepackage{graphicx}
-\usepackage{float}
-%    \end{macrocode}
-% \iffalse
-
-% \fi
-% Having finished the preamble, we begin the document, typeset the title and include a table of contents.
-%    \begin{macrocode}
-\begin{document}
-    \maketitle
-    \tableofcontents
-%    \end{macrocode}
-% \iffalse
-
-% \fi
-%
-% Next we add different sections that explain common usage and some features of this class.
-%    \begin{macrocode}
-    \section{Introduction}
-    The \textsf{rub-kunstgeschichte} class aims to implement
-    the guidelines on scientific writing of the art history institute
-    ``KGI'' (\textit{Kunstgeschichtliches Institut})
-    at Ruhr University Bochum.
-
-    This example document showcases a typical use
-    of the \textsf{rub-kunstgeschichte} class.
-    Just by using the class, the page is already formatted
-    so that the typeset text has 12pt font size,
-    there is a 1.5 times line-spacing present
-    and the page size is A4 with 2cm margins at top, left and bottom,
-    as well as a 4cm margin on the right.\autocite[See:][11]{guidelines}
-
-    Also, paragraphs don't have an indentation
-    in the first line by default,
-    contrary to typical \LaTeX{} documents.
-    Furthermore the \texttt{hyperref} package
-    is automatically loaded to enable clickable
-    links and references.
-
-    Notably, the first page is a custom title page
-    that aims to recreate the titlepage template
-    of the guidelines in \LaTeX.
-    Note, how the fields have descriptive default values in CAPS,
-    so that you can easily see which information is still missing
-    for the title page.
-    As the documentation of this class states,
-    you can either pass the corresponding key-value options
-    into an optional argument of \verb|\maketitle|,
-    or use the \verb|\configureTitlepage| macro
-    in the preamble.\footnote{For a full list of titlepage options
-    refer to the \texttt{rub-kunstgeschichte} class documentation.}
-
-    We use the \texttt{babel} package
-    to set the language to german
-    (even though this example document is actually written in english)
-    to showcase how headings are automatically translated.
-
-    \section{How to cite sources}
-    This class automatically loads the \texttt{biblatex} package
-    for sophisticated bibliography and citations.
-    The class also sets some options by default
-    that make \texttt{biblatex} behave closer to the
-    suggested citation style in the guidelines of the institute.
-
-    You can cite sources using the \verb|\autocite| command,
-    which is configured by this class to use footnotes
-    \autocite{exampleArticle}.
-    Page numbers can be added in the optional argument
-    \autocite[394]{exampleBook}
-    and citation signals in a second one
-    that comes before the one for page numbers
-    \autocite[see][]{exampleWebsite}.
-    You can even cite multiple sources at once
-    using the \verb|\autocites| command
-    \autocites[111]{exampleBook}[see also][13]{exampleArticle}.
-
-    For more information refer to the documentation
-    of the \texttt{biblatex} package
-    \autocite{biblatexDocs}
-    or the biblatex cheatsheet
-    \autocite{biblatexCheatsheet}.
-
-    \clearpage
-    \appendix
-
-    \section{The appendix}
-
-    We finished the main content of the example document
-    so we call \verb|\appendix| before this first appendix section.
-    It will automatically disable section numbering
-    for any appendix sections.
-
-    Here, we can include a bibliography
-    containing all cited sources,
-    divided into primary and secondary literature,
-    with \verb|\printbibliographies|.
-    Primary literature (also called a \textit{source})
-    is something like the bible\autocite{bible},
-    letters, treatises etc.
-    We put the bibliography on a new page
-    by using \verb|\clearpage| before printing it.
-    Note, that since we used
-    \verb|\usepackage[ngerman]{babel}| in the preamble,
-    the headings of the bibliography are typed in german.
-
-    \clearpage
-    \printbibliographies
-
-    \clearpage
-    \section{Figures}
-
-    The guidelines suggest putting all figures
-    in a dedicated appendix section
-    after the bibliography instead of in between the
-    main content text.\autocite[10,25]{guidelines}
-
-    We can include figures with \verb|\includegraphics|
-    inside a \texttt{figure} environment.
-    We also add a caption with the meta information
-    of the shown artwork,\autocite[25--26]{guidelines}
-    as well as a short caption in square brackets
-    and a label for back-referencing.
-
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=0.8\linewidth]{example-image-golden}
-        \caption{An Artist, The artwork title, Where was it made?,
-        The year, Material, Measurements, Where is it kept?,
-        Inventory number.}
-        \label{fig:exampleArtwork}
-    \end{figure}
-%    \end{macrocode}
-%
-% Finally we end the document environment
-%    \begin{macrocode}
-\end{document}
-%    \end{macrocode}
-% \clearpage
-% \iffalse
-
-%</example>
 % \fi
 %
 % \Finale

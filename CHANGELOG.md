@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.5.0] - 2025-02-04
+
+### Added
+
+- **\subtitle** command
+- **\figuresource** and **\printfiguresources** commands for partially automated list of figure sources/credits
+
 ## [v0.4.0] - 2024-12-11
 
 ### Added
