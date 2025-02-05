@@ -20,11 +20,11 @@ You can also find a simple example called [rub-kunstgeschichte-example.tex](http
 
 On release, the latest version of this class is automatically published to [CTAN](https://ctan.org/pkg/rub-kunstgeschichte). Therefore it should be included in the latest version of the major Tex distributions a few days after the CTAN release.
 
-If you want to manually install any version of this class, the simplest solution would be to download the `rub-kunstgeschichte.cls` file from the release assets on the [GitHub release](https://github.com/rub-kgi/rub-kunstgeschichte-latex/releases) page and place it in the same folder as your document.
+If you want to manually install any version of this class, the simplest solution would be to download the [rub-kunstgeschichte.cls](https://github.com/rub-kgi/rub-kunstgeschichte-latex/releases/latest/download/rub-kunstgeschichte.cls) file from the release assets on the [GitHub release](https://github.com/rub-kgi/rub-kunstgeschichte-latex/releases) page and place it in the same folder as your document.
 
-A more advanced manual installation would be to take the `rub-kunstgeschichte.tds.zip`, unpack it and place it in the texmf tree to get a full installation including documentation and example files.
+A more advanced manual installation would be to take the [rub-kunstgeschichte.tds.zip](https://github.com/rub-kgi/rub-kunstgeschichte-latex/releases/latest/download/rub-kunstgeschichte.tds.zip), unpack it and place it in the texmf tree to get a full installation including documentation and example files.
 
-Furthermore you can download the `rub-kunstgeschichte-ctan.zip` and run `(pdf)latex` on the `.dtx` and `.ins` files to obtain the derived class file, examples and documentation from the source files.
+Furthermore you can download the [rub-kunstgeschichte-ctan.zip](https://github.com/rub-kgi/rub-kunstgeschichte-latex/releases/latest/download/rub-kunstgeschichte-ctan.zip) and run `pdflatex` on the `.dtx` file to produce the documentation, as well as `tex` or `latex` on the `.ins` file to obtain the derived class file from the source files.
 
 ## Author and license
 
