@@ -18,7 +18,7 @@ uploadconfig = {
     repository = "https://github.com/rub-kgi/rub-kunstgeschichte-latex",
     bugtracker = "https://github.com/rub-kgi/rub-kunstgeschichte-latex/issues",
     update = true,
-    note = "In this version I moved the example document to a dedicated .tex file instead of generating it from the .dtx file. I also would like the users to be able to easily download the example document .tex file to use as a template, not just the compiled pdf version of it. Is this possible?"
+    note = [[Uploaded automatically by l3build...]]
 }
 
 -- Automated tagging
